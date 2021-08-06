@@ -25,6 +25,7 @@ import com.itheamc.hamroclassroom_student.models.Teacher;
 import com.itheamc.hamroclassroom_student.models.User;
 import com.itheamc.hamroclassroom_student.utils.LocalStorage;
 import com.itheamc.hamroclassroom_student.utils.NotifyUtils;
+import com.itheamc.hamroclassroom_student.utils.OtherUtils;
 import com.itheamc.hamroclassroom_student.viewmodel.MainViewModel;
 import com.squareup.picasso.Picasso;
 
@@ -64,6 +65,10 @@ public class HomeFragment extends Fragment implements FirestoreCallbacks, View.O
         navController = Navigation.findNavController(view);
         viewModel = new ViewModelProvider(requireActivity()).get(MainViewModel.class);
 
+        // Setting greeting label text
+        homeBinding.greetingLabel.setText(OtherUtils.showGreeting());
+
+        if (viewModel.getUser() != null) homeBinding.userName.setText(viewModel.getUser().get_name().split(" ")[0]);
 
         // Setting OnClickListener on Views
         homeBinding.userIconCardView.setOnClickListener(this);
@@ -139,6 +144,7 @@ public class HomeFragment extends Fragment implements FirestoreCallbacks, View.O
             viewModel.setUser(user);
             Picasso.get().load(user.get_image())
                     .into(homeBinding.userIcon);
+            homeBinding.userName.setText(user.get_name().split(" ")[0]);
         }
     }
 
