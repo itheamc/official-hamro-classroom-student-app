@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="subject"
+            type="com.itheamc.hamroclassroom_student.models.Subject" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/subjectCardView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="8dp"
+            android:foreground="?attr/selectableItemBackground"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="4dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/subjectName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginTop="16dp"
+                    android:fontFamily="sans-serif-condensed"
+                    android:text="@{subject._name}"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="Social Studies" />
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/teacherImageCardView"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    app:cardBackgroundColor="#550505"
+                    app:cardCornerRadius="24dp"
+                    app:layout_constraintStart_toStartOf="@+id/subjectName"
+                    app:layout_constraintTop_toBottomOf="@+id/subjectName">
+
+                    <ImageView
+                        android:id="@+id/teacherImageView"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:contentDescription="TODO"
+                        android:imageSource="@{subject._teacher.get(1)}"
+                        android:scaleType="centerCrop"
+                        tools:ignore="ImageContrastCheck"
+                        tools:srcCompat="@tools:sample/avatars" />
+                </androidx.cardview.widget.CardView>
+
+                <TextView
+                    android:id="@+id/classTeacherName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:fontFamily="sans-serif-condensed"
+                    android:text="@{subject._teacher.get(1)}"
+                    android:textSize="14sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/teacherImageCardView"
+                    app:layout_constraintStart_toEndOf="@+id/teacherImageCardView"
+                    app:layout_constraintTop_toTopOf="@+id/teacherImageCardView"
+                    tools:text="Kusma Chaudhary" />
+
+                <TextView
+                    android:id="@+id/startTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:fontFamily="sans-serif-condensed-light"
+                    android:text="@{String.format(`Started At %s`, subject._start_time)}"
+                    android:textSize="18sp"
+                    android:textStyle="italic"
+                    app:layout_constraintStart_toStartOf="@+id/teacherImageCardView"
+                    app:layout_constraintTop_toBottomOf="@+id/classTeacherName"
+                    tools:text="Started At 12:45" />
+
+                <Button
+                    android:id="@+id/joinButton"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:layout_marginEnd="8dp"
+                    android:fontFamily="sans-serif-condensed"
+                    android:text="@string/join_class"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    app:cornerRadius="24dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/assignmentsButton"
+                    app:layout_constraintEnd_toStartOf="@+id/assignmentsButton"
+                    app:layout_constraintTop_toTopOf="@+id/assignmentsButton"
+                    tools:ignore="TextContrastCheck,TextContrastCheck,TouchTargetSizeCheck" />
+
+                <Button
+                    android:id="@+id/assignmentsButton"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="24dp"
+                    android:layout_marginBottom="12dp"
+                    android:fontFamily="sans-serif-condensed"
+                    android:text="@string/assignments"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    app:cornerRadius="24dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/startTime"
+                    tools:ignore="TextContrastCheck,TextContrastCheck,TouchTargetSizeCheck" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.cardview.widget.CardView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

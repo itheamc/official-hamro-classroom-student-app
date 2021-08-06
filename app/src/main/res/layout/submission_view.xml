@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="submission"
+            type="com.itheamc.hamroclassroom_student.models.Submission" />
+        <variable
+            name="date"
+            type="String" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/submissionCardView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="8dp"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="4dp"
+            android:foreground="?attr/selectableItemBackground"
+            android:clickable="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:focusable="true">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/assignmentQuestion"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:fontFamily="sans-serif-condensed-light"
+                    android:text="@{submission._submitted_by.size() ==2 ? submission._submitted_by.get(1) : `Unknown`}"
+                    android:textSize="24sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="What is social development? Define sustainable development." />
+
+                <TextView
+                    android:id="@+id/subjectName"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:drawableLeft="@drawable/ic_subjects"
+                    android:drawablePadding="4dp"
+                    android:fontFamily="sans-serif-condensed-medium"
+                    android:text="@{submission._images.size() > 0 ? (submission._images.size() == 1 ? `1 Image included` : String.format(`%d Images Included`, submission._images.size())) : `No image included`}"
+                    android:textSize="16sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/assignmentQuestion"
+                    tools:text="Social Studies" />
+
+
+                <TextView
+                    android:id="@+id/imagesIncluded"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/ic_images"
+                    android:drawablePadding="4dp"
+                    android:fontFamily="sans-serif-condensed"
+                    android:text="@{submission._images.size() > 0 ? (submission._images.size() == 1 ? `1 Image included` : String.format(`%d Images Included`, submission._images.size())) : `No image included`}"
+                    android:textSize="14sp"
+                    android:textStyle="italic"
+                    app:layout_constraintStart_toStartOf="@+id/subjectName"
+                    app:layout_constraintTop_toBottomOf="@+id/subjectName"
+                    tools:text="2 images included" />
+
+                <TextView
+                    android:id="@+id/submittedOn"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:drawableLeft="@drawable/ic_calendar"
+                    android:drawablePadding="4dp"
+                    android:fontFamily="sans-serif-condensed"
+                    android:text="@{date}"
+                    android:textSize="14sp"
+                    android:textStyle="italic"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="@id/imagesIncluded"
+                    app:layout_constraintTop_toBottomOf="@+id/imagesIncluded"
+                    tools:text="27 July, 2021" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <LinearLayout
+                android:id="@+id/checkedLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:is_visible="@{submission._checked}"
+                android:orientation="vertical"
+                android:padding="24dp">
+
+                <ImageView
+                    android:layout_width="60dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="end"
+                    app:srcCompat="@drawable/ic_done" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

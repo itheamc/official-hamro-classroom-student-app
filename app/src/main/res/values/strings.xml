@@ -1,0 +1,41 @@
+<resources>
+    <string name="app_name">Hamro Classroom</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="sign_in_with_google">Sign In With Google</string>
+    <string name="sign_in_with_facebook">Sign In With Facebook</string>
+    <string name="name">Name</string>
+    <string name="i_agree_with">I agree with</string>
+    <string name="terms">Terms</string>
+    <string name="and">and</string>
+    <string name="conditions">Conditions</string>
+
+    <string name="facebook_app_id">240326051079128</string>
+    <string name="fb_login_protocol_scheme">fb240326051079128</string>
+    <string name="web_client_id">813872939086-9gnletiojkr760sk92rlis2saht2obkf.apps.googleusercontent.com</string>
+    <string name="unable_to_login_message">Something went wrong!!</string>
+    <string name="continue_button">Continue</string>
+    <string name="warning_message_regarding_terms">Continuing automatically force you to accept our</string>
+    <string name="terms_of_services">Terms of Services</string>
+    <string name="privacy_policy">Privacy Policy</string>
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="login_failed">"Login failed"</string>
+    <string name="phone_number">Phone Number</string>
+    <string name="school">School</string>
+    <string name="subjects">Subjects</string>
+    <string name="address">Address</string>
+    <string name="email">Email</string>
+    <string name="full_name">Full Name</string>
+    <string name="welcome_to">Welcome\nto</string>
+    <string name="went_wrong_message">Something went wrong!!</string>
+    <string name="assignments">Assignments</string>
+    <string name="_class">Class</string>
+    <string name="section">Section</string>
+    <string name="roll_no">Roll No.</string>
+    <string name="submit">Submit</string>
+    <string name="join_class">Join Class</string>
+    <string name="student_s_name">Student\'s Name</string>
+    <string name="guardian_s_name">Guardian\'s Name</string>
+    <string name="background">background</string>
+    <string name="gender">Gender</string>
+</resources>

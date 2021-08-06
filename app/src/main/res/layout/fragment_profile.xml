@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="user"
+            type="com.itheamc.hamroclassroom_student.models.User" />
+
+        <variable
+            name="school"
+            type="com.itheamc.hamroclassroom_student.models.School" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/profileFragmentLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="?colorOnPrimary"
+        tools:context=".ui.ProfileFragment">
+
+        <ImageButton
+            android:id="@+id/backButton"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:background="?selectableItemBackgroundBorderless"
+            app:cornerRadius="16dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_navigate_back"
+            tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="48dp"
+            android:fontFamily="sans-serif-smallcaps"
+            android:text="Profile"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/backButton"
+            app:layout_constraintStart_toEndOf="@+id/backButton"
+            app:layout_constraintTop_toTopOf="@+id/backButton" />
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/idCardView"
+            android:layout_width="330dp"
+            android:layout_height="540dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/id_card"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/backButton">
+
+            <TextView
+                android:id="@+id/schoolName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="16dp"
+                android:fontFamily="@font/denk_one"
+                android:text="@{school._name}"
+                android:textAlignment="center"
+                android:textSize="28sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="Buddha Jyoti Secondary School" />
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/userImageCardView"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_marginTop="24dp"
+                app:cardCornerRadius="50dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/schoolName">
+
+                <ImageView
+                    android:id="@+id/imageView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:imageSource="@{user._image}"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/onlineclass" />
+            </androidx.cardview.widget.CardView>
+
+            <TextView
+                android:id="@+id/userName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:fontFamily="cursive"
+                android:text="@{user._name}"
+                android:textAlignment="center"
+                android:textSize="28sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="@+id/userImageCardView"
+                app:layout_constraintStart_toStartOf="@+id/userImageCardView"
+                app:layout_constraintTop_toBottomOf="@+id/userImageCardView"
+                tools:text="Manzil Chaudhary" />
+
+            <TextView
+                android:id="@+id/className"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:fontFamily="casual"
+                android:text="@{String.format(`Class:  %s`, user._class)}"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="@+id/userName"
+                app:layout_constraintTop_toBottomOf="@+id/userName"
+                tools:text="Class:  10" />
+
+
+            <TextView
+                android:id="@+id/classSection"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:fontFamily="casual"
+                android:text="@{String.format(`Section:  %s`, user._section)}"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="@+id/className"
+                app:layout_constraintTop_toBottomOf="@+id/className"
+                tools:text="Section:  A" />
+
+
+            <TextView
+                android:id="@+id/rollNumber"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:fontFamily="casual"
+                android:text="@{String.format(`Roll Number:  %s`, user._roll_number)}"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="@+id/classSection"
+                app:layout_constraintTop_toBottomOf="@+id/classSection"
+                tools:text="Roll Number:  10" />
+
+            <TextView
+                android:id="@+id/guardianName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:fontFamily="casual"
+                android:text="@{String.format(`Guardian:  %s`, user._guardian)}"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="@+id/rollNumber"
+                app:layout_constraintTop_toBottomOf="@+id/rollNumber"
+                tools:text="Guardian:  Tok Nath Chaudhary" />
+
+            <TextView
+                android:id="@+id/phoneNumber"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:fontFamily="casual"
+                android:text="@{String.format(`Phone No.:  %s`, user._phone)}"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="@+id/guardianName"
+                app:layout_constraintTop_toBottomOf="@+id/guardianName"
+                tools:text="Phone No.:  9847967132" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:background="@drawable/id_card_bottom_shape"
+                android:gravity="center"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent">
+
+
+                <TextView
+                    android:id="@+id/schoolAddress"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-smallcaps"
+                    android:text="@{school._address}"
+                    android:textAlignment="center"
+                    android:textColor="@color/primary_text_color_dark"
+                    android:textSize="12sp"
+                    tools:text="Gadhawa - 07, gadhawa Dang" />
+
+                <TextView
+                    android:id="@+id/schoolPhone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:fontFamily="sans-serif-smallcaps"
+                    android:text="@{String.format(`Ph.: %s`, school._phone)}"
+                    android:textAlignment="center"
+                    android:textColor="@color/primary_text_color_dark"
+                    android:textSize="12sp"
+                    tools:text="Ph. 082-540540" />
+            </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <LinearLayout
+            android:id="@+id/profileOverlayLayLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/overlay_layout_background"
+            android:elevation="20dp"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ProgressBar
+                android:id="@+id/progressBar"
+                style="?android:attr/progressBarStyle"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:indeterminateTint="@color/primary_text_color_dark" />
+        </LinearLayout>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
