@@ -23,7 +23,7 @@ public class User {
     private String _roll_number;
     private String _school;
     private List<String> _subjects;
-    private List<String> _submissions;
+    private List<String> _submissions;      // Subject and assignmentId - e.g.(bdbdjksbd___snsvchjv)
     private Date _joined_on;
 
     // Constructor

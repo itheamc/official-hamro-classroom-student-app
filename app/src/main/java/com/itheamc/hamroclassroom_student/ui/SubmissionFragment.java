@@ -94,7 +94,8 @@ public class SubmissionFragment extends Fragment implements StorageCallbacks, Fi
     /*
     Boolean
      */
-    private boolean is_uploading = false;   //To handle the image remove
+    private boolean is_uploading = false;   // To handle the image remove
+    private boolean is_submitted = false;   // To handle the submission id update in user
 
 
     // Constructor
@@ -260,6 +261,21 @@ public class SubmissionFragment extends Fragment implements StorageCallbacks, Fi
     }
 
 
+    /*
+    Function to update submission id on the User._submissions list
+     */
+    private void updateSubmissionIdToUser() {
+        Assignment ass = viewModel.getAssignment();
+        if (ass == null) {
+            ViewUtils.hideProgressBar(submissionBinding.progressBarContainer);
+            ViewUtils.enableViews(submissionBinding.submitButton, textInputLayout);
+            return;
+        }
+        User user = viewModel.getUser();
+        FirestoreHandler.getInstance(this).addSubmissionToUser(user.get_id(), ass.get_subject() + "___" + ass.get_id());
+    }
+
+
     /**
      * ----------------------------------------------------------------------------
      * Function to display the progress update in textview while loading
@@ -345,6 +361,8 @@ public class SubmissionFragment extends Fragment implements StorageCallbacks, Fi
         if (submissionBinding == null) return;
         if (getContext() != null) NotifyUtils.showToast(getContext(), "Upload Failed");
         is_uploading = false;
+        is_submitted = false;
+        uploadCount = 0;
         ViewUtils.hideProgressBar(submissionBinding.progressBarContainer);
         ViewUtils.enableViews(submissionBinding.submitButton, textInputLayout);
 
@@ -393,12 +411,20 @@ public class SubmissionFragment extends Fragment implements StorageCallbacks, Fi
     public void onSuccess(User user, Teacher teacher, School school, List<School> schools, List<Subject> subjects, List<Assignment> assignments, Submission submissions, List<Notice> notices) {
         if (submissionBinding == null) return;
 
+        if (!is_submitted) {
+            is_submitted = true;
+            updateSubmissionIdToUser();
+            return;
+        }
+
         ViewUtils.hideProgressBar(submissionBinding.progressBarContainer);
         ViewUtils.enableViews(submissionBinding.submitButton, textInputLayout);
         if (getContext() != null) NotifyUtils.showToast(getContext(), "Added Successfully");
         uploadCount = 0;
         is_uploading = false;
+        is_submitted = false;
         clearAllInputs();
+
     }
 
     /*

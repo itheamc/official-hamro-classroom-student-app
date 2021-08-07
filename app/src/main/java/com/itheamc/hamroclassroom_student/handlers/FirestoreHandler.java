@@ -145,6 +145,26 @@ public class FirestoreHandler {
 
 
     /**
+     * Function to add submission Id to user in the Firestore
+     * --------------------------------------------------------------------------------------
+     */
+    public void addSubmissionToUser(String _uid, String submissionId) {
+        firestore.collection("students")
+                .document(_uid)
+                .update("_submissions", FieldValue.arrayUnion(submissionId))
+                .addOnSuccessListener(executorService, unused -> notifyOnSuccess(
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null))
+                .addOnFailureListener(executorService, this::notifyOnFailure);
+    }
+
+    /**
      * Function to get subjects list from the cloud firestore
      * --------------------------------------------------------------------------------------
      */

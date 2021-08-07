@@ -38,10 +38,10 @@ public class SubmissionAdapter extends ListAdapter<Submission, SubmissionAdapter
 
     @Override
     public void onBindViewHolder(@NonNull @NotNull SubmissionViewHolder holder, int position) {
-//        Submission submission = getItem(position);
-//        holder.viewBinding.setSubmission(submission);
-//        String formattedDate = DateFormat.getDateInstance().format(submission.get_submitted_date());
-//        holder.viewBinding.setDate(formattedDate);
+        Submission submission = getItem(position);
+        holder.viewBinding.setSubmission(submission);
+        String formattedDate = DateFormat.getDateInstance().format(submission.get_submitted_date());
+        holder.viewBinding.setDate(formattedDate);
     }
 
     protected static class SubmissionViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {

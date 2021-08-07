@@ -70,7 +70,7 @@
             android:paddingLeft="24dp"
             android:paddingRight="24dp"
             android:text="@string/sign_in_with_google"
-            android:textSize="14sp"
+            android:textSize="12dp"
             app:cornerRadius="8dp" />
 
         <Button
@@ -83,7 +83,7 @@
             android:paddingLeft="24dp"
             android:paddingRight="24dp"
             android:text="@string/sign_in_with_facebook"
-            android:textSize="14sp"
+            android:textSize="12dp"
             app:cornerRadius="8dp" />
 
 
