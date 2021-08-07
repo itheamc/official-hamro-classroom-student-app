@@ -1,6 +1,7 @@
 package com.itheamc.hamroclassroom_student.ui;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -77,8 +78,32 @@ public class AssignmentsFragment extends Fragment implements FirestoreCallbacks,
         assignmentAdapter = new AssignmentAdapter(this);
         assignmentsBinding.assignmentsRecyclerView.setAdapter(assignmentAdapter);
 
+        // Initializing filteredSubjects
+        filteredSubjects = new ArrayList<>();
+        listOfAssignments = new ArrayList<>();
+
+
+        // Setting swipe and refresh layout
+        assignmentsBinding.assignmentsSwipeRefreshLayout.setOnRefreshListener(() -> {
+            filteredSubjects = new ArrayList<>();
+            listOfAssignments = new ArrayList<>();
+            checksUser();
+        });
+
+        // Handling back button
+        assignmentsBinding.backButton.setOnClickListener(v -> {
+            navController.popBackStack();
+        });
+
+
+
         // Checks User for assignment extraction
-        checksUser();
+        List<Assignment> storedAssignment = viewModel.getAllAssignments();
+        if (storedAssignment != null && !storedAssignment.isEmpty()) {
+            assignmentAdapter.submitList(storedAssignment);
+        } else {
+            checksUser();
+        }
     }
 
 
@@ -106,9 +131,15 @@ public class AssignmentsFragment extends Fragment implements FirestoreCallbacks,
         List<Subject> subjects = viewModel.getSubjects();
         if (subjects != null && !subjects.isEmpty()) {
             // Getting filtered subjects list from the available subjects
-            filteredSubjects = new ArrayList<>();
             filteredSubjects = Subject.filterSubjects(subjects);
-            retrieveSubjects();
+            if (!filteredSubjects.isEmpty()) {
+                retrieveAssignments();
+                ViewUtils.showProgressBar(assignmentsBinding.assignmentsOverlayLayLayout);
+                return;
+            }
+
+            ViewUtils.hideProgressBar(assignmentsBinding.assignmentsOverlayLayLayout);
+            ViewUtils.handleRefreshing(assignmentsBinding.assignmentsSwipeRefreshLayout);
             return;
         }
 
@@ -176,20 +207,17 @@ public class AssignmentsFragment extends Fragment implements FirestoreCallbacks,
 
         // If Assignment is retrieved
         if (assignments != null) {
-            if (position > filteredSubjects.size()) {
-                assignmentAdapter.submitList(listOfAssignments);
-                ViewUtils.hideProgressBar(assignmentsBinding.assignmentsOverlayLayLayout);
-                ViewUtils.handleRefreshing(assignmentsBinding.assignmentsSwipeRefreshLayout);
-                return;
-            }
-
             if (!assignments.isEmpty()) {
                 listOfAssignments.addAll(assignments);
             }
 
             position += 1;
             retrieveAssignments();
+            return;
         }
+
+        ViewUtils.hideProgressBar(assignmentsBinding.assignmentsOverlayLayLayout);
+        ViewUtils.handleRefreshing(assignmentsBinding.assignmentsSwipeRefreshLayout);
     }
 
     @Override
@@ -208,25 +236,40 @@ public class AssignmentsFragment extends Fragment implements FirestoreCallbacks,
     private void handleSubjects(List<Subject> subjects) {
         User u = viewModel.getUser();
         List<Subject> processedSubjects = Subject.processedSubjects(subjects, u);
-        viewModel.setSubjects(processedSubjects);
 
-        // Getting filtered subjects list from the available subjects
-        filteredSubjects = new ArrayList<>();
-        filteredSubjects = Subject.filterSubjects(processedSubjects);
-        retrieveAssignments();
+        if (!processedSubjects.isEmpty()) {
+            viewModel.setSubjects(processedSubjects);
+            // Getting filtered subjects list from the available subjects
+            filteredSubjects = Subject.filterSubjects(processedSubjects);
+
+            if (!filteredSubjects.isEmpty()) {
+                retrieveAssignments();
+            } else {
+                ViewUtils.hideProgressBar(assignmentsBinding.assignmentsOverlayLayLayout);
+                ViewUtils.handleRefreshing(assignmentsBinding.assignmentsSwipeRefreshLayout);
+            }
+            return;
+        }
+
+        ViewUtils.hideProgressBar(assignmentsBinding.assignmentsOverlayLayLayout);
+        ViewUtils.handleRefreshing(assignmentsBinding.assignmentsSwipeRefreshLayout);
     }
 
     /**
      * Function to retrieve assignments
      */
     private void retrieveAssignments() {
-        if (filteredSubjects.size() < 1) {
-            ViewUtils.hideProgressBar(assignmentsBinding.assignmentsOverlayLayLayout);
-            ViewUtils.handleRefreshing(assignmentsBinding.assignmentsSwipeRefreshLayout);
+        if (position < filteredSubjects.size()) {
+            String id = filteredSubjects.get(position).get_id();
+            FirestoreHandler.getInstance(this).getAssignments(id);
             return;
         }
-        String id = filteredSubjects.get(position).get_id();
-        FirestoreHandler.getInstance(this).getAssignments(id);
+
+        position = 0;
+        assignmentAdapter.submitList(listOfAssignments);
+        viewModel.setAllAssignments(listOfAssignments);
+        ViewUtils.hideProgressBar(assignmentsBinding.assignmentsOverlayLayLayout);
+        ViewUtils.handleRefreshing(assignmentsBinding.assignmentsSwipeRefreshLayout);
     }
 
 

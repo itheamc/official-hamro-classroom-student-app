@@ -30,6 +30,8 @@ public class MainViewModel extends ViewModel {
     private List<School> schools;
     private List<Subject> subjects;
     private List<Assignment> assignments;
+    private List<Assignment> allAssignments;
+    private List<Submission> submissions;
     private List<Notice> notices;
 
 
@@ -108,6 +110,22 @@ public class MainViewModel extends ViewModel {
         this.assignments = assignments;
     }
 
+    public List<Assignment> getAllAssignments() {
+        return allAssignments;
+    }
+
+    public void setAllAssignments(List<Assignment> allAssignments) {
+        this.allAssignments = allAssignments;
+    }
+
+    public List<Submission> getSubmissions() {
+        return submissions;
+    }
+
+    public void setSubmissions(List<Submission> submissions) {
+        this.submissions = submissions;
+    }
+
     public List<Notice> getNotices() {
         return notices;
     }
@@ -117,8 +135,8 @@ public class MainViewModel extends ViewModel {
     }
 
     /*
-    Function to update subject in List<Subject> subjects
-     */
+        Function to update subject in List<Subject> subjects
+         */
     public void modifySubjectItems(Subject _subject) {
         List<Subject> subjectList = new ArrayList<>();
         for (Subject sub: subjects) {
