@@ -32,6 +32,7 @@ import com.itheamc.hamroclassroom_student.viewmodel.MainViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 
 public class AssignmentsFragment extends Fragment implements FirestoreCallbacks, AssignmentCallbacks {
@@ -87,6 +88,9 @@ public class AssignmentsFragment extends Fragment implements FirestoreCallbacks,
         assignmentsBinding.assignmentsSwipeRefreshLayout.setOnRefreshListener(() -> {
             filteredSubjects = new ArrayList<>();
             listOfAssignments = new ArrayList<>();
+            viewModel.setAllAssignments(null);
+            position = 0;
+            ViewUtils.hideViews(assignmentsBinding.noAssignmentsLayout);
             checksUser();
         });
 
@@ -138,6 +142,7 @@ public class AssignmentsFragment extends Fragment implements FirestoreCallbacks,
                 return;
             }
 
+            ViewUtils.visibleViews(assignmentsBinding.noAssignmentsLayout);
             ViewUtils.hideProgressBar(assignmentsBinding.assignmentsOverlayLayLayout);
             ViewUtils.handleRefreshing(assignmentsBinding.assignmentsSwipeRefreshLayout);
             return;
@@ -223,9 +228,12 @@ public class AssignmentsFragment extends Fragment implements FirestoreCallbacks,
     @Override
     public void onFailure(Exception e) {
         if (assignmentsBinding == null) return;
-        if (getContext() != null) NotifyUtils.showToast(getContext(), e.getMessage());
         ViewUtils.handleRefreshing(assignmentsBinding.assignmentsSwipeRefreshLayout);
         ViewUtils.hideProgressBar(assignmentsBinding.assignmentsOverlayLayLayout);
+
+        ViewUtils.visibleViews(assignmentsBinding.noAssignmentsLayout);
+        if (e.getMessage() == null) return;
+        if (getContext() != null) NotifyUtils.showToast(getContext(), e.getMessage());
     }
 
 
@@ -245,12 +253,14 @@ public class AssignmentsFragment extends Fragment implements FirestoreCallbacks,
             if (!filteredSubjects.isEmpty()) {
                 retrieveAssignments();
             } else {
+                ViewUtils.visibleViews(assignmentsBinding.noAssignmentsLayout);
                 ViewUtils.hideProgressBar(assignmentsBinding.assignmentsOverlayLayLayout);
                 ViewUtils.handleRefreshing(assignmentsBinding.assignmentsSwipeRefreshLayout);
             }
             return;
         }
 
+        ViewUtils.visibleViews(assignmentsBinding.noAssignmentsLayout);
         ViewUtils.hideProgressBar(assignmentsBinding.assignmentsOverlayLayLayout);
         ViewUtils.handleRefreshing(assignmentsBinding.assignmentsSwipeRefreshLayout);
     }
@@ -266,10 +276,16 @@ public class AssignmentsFragment extends Fragment implements FirestoreCallbacks,
         }
 
         position = 0;
-        assignmentAdapter.submitList(listOfAssignments);
-        viewModel.setAllAssignments(listOfAssignments);
         ViewUtils.hideProgressBar(assignmentsBinding.assignmentsOverlayLayLayout);
         ViewUtils.handleRefreshing(assignmentsBinding.assignmentsSwipeRefreshLayout);
+
+        if (listOfAssignments == null || listOfAssignments.isEmpty()) {
+            ViewUtils.visibleViews(assignmentsBinding.noAssignmentsLayout);
+            return;
+        }
+
+        assignmentAdapter.submitList(listOfAssignments);
+        viewModel.setAllAssignments(listOfAssignments);
     }
 
 

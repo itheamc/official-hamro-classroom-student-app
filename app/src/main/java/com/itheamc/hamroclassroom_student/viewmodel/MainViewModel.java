@@ -31,6 +31,7 @@ public class MainViewModel extends ViewModel {
     private List<Subject> subjects;
     private List<Assignment> assignments;
     private List<Assignment> allAssignments;
+    private List<Submission> allSubmissions;
     private List<Submission> submissions;
     private List<Notice> notices;
 
@@ -116,6 +117,14 @@ public class MainViewModel extends ViewModel {
 
     public void setAllAssignments(List<Assignment> allAssignments) {
         this.allAssignments = allAssignments;
+    }
+
+    public List<Submission> getAllSubmissions() {
+        return allSubmissions;
+    }
+
+    public void setAllSubmissions(List<Submission> allSubmissions) {
+        this.allSubmissions = allSubmissions;
     }
 
     public List<Submission> getSubmissions() {

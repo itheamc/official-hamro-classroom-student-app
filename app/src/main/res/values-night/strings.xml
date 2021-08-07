@@ -37,4 +37,7 @@
     <string name="guardian_s_name">Guardian\'s Name</string>
     <string name="background">background</string>
     <string name="gender">Gender</string>
+    <string name="submissions">Submissions</string>
+    <string name="you_haven_t_submitted_yet">You haven\'t submitted yet!!</string>
+    <string name="no_assignments">No Assignments!!</string>
 </resources>
