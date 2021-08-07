@@ -1,138 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/submissionFragmentLayout"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.SubmissionFragment">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+    <data>
+        <variable
+            name="submission"
+            type="com.itheamc.hamroclassroom_student.models.Submission" />
 
-        <TextView
-            android:id="@+id/editTextLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="24dp"
-            android:fontFamily="@font/dekko"
-            android:text="@string/put_your_views_here_optional" />
+    </data>
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/textInputLayout"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="24dp"
-            android:layout_marginRight="24dp"
-            android:gravity="bottom"
-            app:errorEnabled="true">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/assignmentFragmentLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.SubmissionFragment">
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:fontFamily="@font/dekko"
-                android:hint="@string/write_here"
-                android:inputType="textMultiLine"
-                android:maxHeight="150dp"
-                android:textSize="14sp" />
-        </com.google.android.material.textfield.TextInputLayout>
 
-        <TextView
-            android:id="@+id/imageLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:fontFamily="@font/dekko"
-            android:text="@string/pick_images_you_want_to_attach" />
-
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginLeft="24dp"
-            android:layout_marginRight="24dp"
-            android:layout_marginBottom="8dp"
-            android:layout_weight="1">
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/submissionRecyclerView"
-                android:layout_width="0dp"
+            <TextView
+                android:id="@+id/submissionTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:fontFamily="@font/denk_one"
+                android:text="@string/submission_title"
+                android:textSize="20sp"
+                android:visibility="gone"
+                tools:text="What is Heat?" />
+
+            <TextView
+                android:id="@+id/submissionText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:fontFamily="@font/dekko"
+                android:text="@{submission._texts}"
+                android:textSize="16sp"
+                app:lineHeight="20dp"
+                tools:text="Accounting is the process of recording, classifying, summarizing and presenting the financial data." />
+
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/submissionViewPager"
+                android:layout_width="match_parent"
                 android:layout_height="0dp"
-                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:spanCount="3"
-                tools:listitem="@layout/image_view" />
+                android:layout_weight="1" />
 
-            <ImageButton
-                android:id="@+id/imagePickerButton"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:contentDescription="@string/image_picker_button_desc"
-                android:src="@drawable/ic_add_photo"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <Button
-            android:id="@+id/submitButton"
-            android:layout_width="match_parent"
-            android:layout_height="55dp"
-            android:layout_marginLeft="24dp"
-            android:layout_marginRight="24dp"
-            android:layout_marginBottom="8dp"
-            android:fontFamily="@font/dekko"
-            android:text="@string/submit"
-            android:textSize="16sp"
-            app:rippleColor="#00ACC1"
-            app:strokeColor="@color/secondary_text_color_lite" />
-
-    </LinearLayout>
+        </LinearLayout>
 
 
-    <!--  This is progress bar layout  -->
-    <LinearLayout
-        android:id="@+id/progressBarContainer"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:background="@drawable/overlay_layout_background"
-        android:elevation="20dp"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <ProgressBar
-            style="?android:attr/progressBarStyle"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:indeterminateTint="#FDD835" />
-
-        <TextView
-            android:id="@+id/uploadedProgress"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/dekko"
-            android:textAlignment="center"
-            android:textColor="?colorOnSecondary" />
-    </LinearLayout>
-
-
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -60,7 +60,7 @@ public class AssignmentFragment extends Fragment {
         Assignment assignment = viewModel.getAssignment();
         if (assignment != null) {
             assignmentBinding.setAssignment(assignment);
-            sliderAdapter.submitList(assignment.get_images());
+            if (assignment.get_images().size() > 0) sliderAdapter.submitList(assignment.get_images());
         }
 
     }

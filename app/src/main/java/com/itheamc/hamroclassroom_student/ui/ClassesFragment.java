@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -142,7 +143,8 @@ public class ClassesFragment extends Fragment implements SubjectCallbacks, Fires
 
     @Override
     public void onJoinClassClick(int _position) {
-
+        WebView webView = new WebView(getContext());
+        webView.loadUrl("https://meet.google.com/dai-yaxq-drn");
     }
 
 

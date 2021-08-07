@@ -236,7 +236,14 @@ public class SubmissionsFragment extends Fragment implements FirestoreCallbacks,
      */
     @Override
     public void onClick(int _position) {
+        List<Submission> lists = viewModel.getAllSubmissions();
+        Submission sub = null;
+        if (lists != null && !lists.isEmpty()) {
+            sub = lists.get(_position);
+        }
 
+        if (sub != null) viewModel.setSubmission(sub);
+        navController.navigate(R.id.action_submissionsFragment_to_submissionFragment);
     }
 
 

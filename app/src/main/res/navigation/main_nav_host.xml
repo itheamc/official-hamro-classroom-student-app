@@ -45,8 +45,8 @@
             android:id="@+id/action_assignmentsFragment_to_assignmentFragment"
             app:destination="@id/assignmentFragment" />
         <action
-            android:id="@+id/action_assignmentsFragment_to_submissionFragment"
-            app:destination="@id/submissionFragment" />
+            android:id="@+id/action_assignmentsFragment_to_submitFragment"
+            app:destination="@id/submitFragment" />
     </fragment>
     <fragment
         android:id="@+id/classesFragment"
@@ -96,4 +96,9 @@
         android:name="com.itheamc.hamroclassroom_student.ui.SubjectsFragment"
         android:label="fragment_subjects"
         tools:layout="@layout/fragment_subjects" />
+    <fragment
+        android:id="@+id/submitFragment"
+        android:name="com.itheamc.hamroclassroom_student.ui.SubmitFragment"
+        android:label="fragment_submit"
+        tools:layout="@layout/fragment_submit" />
 </navigation>

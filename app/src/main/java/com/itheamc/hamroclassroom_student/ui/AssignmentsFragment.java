@@ -169,7 +169,7 @@ public class AssignmentsFragment extends Fragment implements FirestoreCallbacks,
         }
 
         if (ass != null) viewModel.setAssignment(ass);
-        navController.navigate(R.id.action_assignmentsFragment_to_submissionFragment);
+        navController.navigate(R.id.action_assignmentsFragment_to_submitFragment);
     }
 
     @Override
