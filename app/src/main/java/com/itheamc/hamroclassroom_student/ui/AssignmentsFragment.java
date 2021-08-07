@@ -13,6 +13,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
+import com.itheamc.hamroclassroom_student.R;
 import com.itheamc.hamroclassroom_student.adapters.AssignmentAdapter;
 import com.itheamc.hamroclassroom_student.callbacks.AssignmentCallbacks;
 import com.itheamc.hamroclassroom_student.callbacks.FirestoreCallbacks;
@@ -161,12 +162,26 @@ public class AssignmentsFragment extends Fragment implements FirestoreCallbacks,
      */
     @Override
     public void onSubmissionsClick(int _position) {
+        List<Assignment> lists = viewModel.getAllAssignments();
+        Assignment ass = null;
+        if (lists != null && !lists.isEmpty()) {
+            ass = lists.get(_position);
+        }
 
+        if (ass != null) viewModel.setAssignment(ass);
+        navController.navigate(R.id.action_assignmentsFragment_to_submissionFragment);
     }
 
     @Override
     public void onClick(int _position) {
+        List<Assignment> lists = viewModel.getAllAssignments();
+        Assignment ass = null;
+        if (lists != null && !lists.isEmpty()) {
+            ass = lists.get(_position);
+        }
 
+        if (ass != null) viewModel.setAssignment(ass);
+        navController.navigate(R.id.action_assignmentsFragment_to_assignmentFragment);
     }
 
     @Override

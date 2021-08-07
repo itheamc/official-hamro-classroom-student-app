@@ -12,7 +12,9 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
+import com.itheamc.hamroclassroom_student.adapters.SliderAdapter;
 import com.itheamc.hamroclassroom_student.databinding.FragmentAssignmentBinding;
+import com.itheamc.hamroclassroom_student.models.Assignment;
 import com.itheamc.hamroclassroom_student.viewmodel.MainViewModel;
 
 
@@ -21,6 +23,7 @@ public class AssignmentFragment extends Fragment {
     private FragmentAssignmentBinding assignmentBinding;
     private MainViewModel viewModel;
     private NavController navController;
+    private SliderAdapter sliderAdapter;
 
     public AssignmentFragment() {
         // Required empty public constructor
@@ -48,5 +51,27 @@ public class AssignmentFragment extends Fragment {
         // Initializing NavController and ViewModel
         navController = Navigation.findNavController(view);
         viewModel = new ViewModelProvider(requireActivity()).get(MainViewModel.class);
+
+
+        // Initializing slider adapter...
+        sliderAdapter = new SliderAdapter();
+        assignmentBinding.assignmentViewPager.setAdapter(sliderAdapter);
+
+        Assignment assignment = viewModel.getAssignment();
+        if (assignment != null) {
+            assignmentBinding.setAssignment(assignment);
+            sliderAdapter.submitList(assignment.get_images());
+        }
+
     }
+
+    // Overrided to manage the view destroy
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        assignmentBinding = null;
+    }
+
+
+
 }

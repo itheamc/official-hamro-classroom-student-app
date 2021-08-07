@@ -40,4 +40,10 @@
     <string name="submissions">Submissions</string>
     <string name="you_haven_t_submitted_yet">You haven\'t submitted yet!!</string>
     <string name="no_assignments">No Assignments!!</string>
+    <string name="image_picker_button_desc">Image Picker Button Desc</string>
+    <string name="finishing_uploads">Finishing..</string>
+    <string name="finalizing_uploads">Finalizing Uploads</string>
+    <string name="pick_images_you_want_to_attach">Pick Images You Want To Attach</string>
+    <string name="write_here">Write here....</string>
+    <string name="put_your_views_here_optional">Put Your Views Here (Optional)</string>
 </resources>

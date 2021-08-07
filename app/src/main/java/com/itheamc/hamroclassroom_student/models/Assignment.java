@@ -13,6 +13,7 @@ public class Assignment {
     private List<String> _docs;
     private String _title;
     private String _desc;
+    private String _subject;
     private Date _assigned_date;
     private Date _due_date;
     private int _total_submits;
@@ -22,12 +23,13 @@ public class Assignment {
     }
 
     // Constructor with parameters
-    public Assignment(String _id, List<String> _images, List<String> _docs, String _title, String _desc, Date _assigned_date, Date _due_date, int _total_submits) {
+    public Assignment(String _id, List<String> _images, List<String> _docs, String _title, String _desc, String _subject, Date _assigned_date, Date _due_date, int _total_submits) {
         this._id = _id;
         this._images = _images;
         this._docs = _docs;
         this._title = _title;
         this._desc = _desc;
+        this._subject = _subject;
         this._assigned_date = _assigned_date;
         this._due_date = _due_date;
         this._total_submits = _total_submits;
@@ -74,6 +76,14 @@ public class Assignment {
         this._desc = _desc;
     }
 
+    public String get_subject() {
+        return _subject;
+    }
+
+    public void set_subject(String _subject) {
+        this._subject = _subject;
+    }
+
     public Date get_assigned_date() {
         return _assigned_date;
     }
@@ -107,6 +117,7 @@ public class Assignment {
                 ", _docs=" + _docs +
                 ", _title='" + _title + '\'' +
                 ", _desc='" + _desc + '\'' +
+                ", _subject='" + _subject + '\'' +
                 ", _assigned_date=" + _assigned_date +
                 ", _due_date=" + _due_date +
                 ", _total_submits=" + _total_submits +
@@ -125,10 +136,10 @@ public class Assignment {
                 Objects.equals(get_docs(), that.get_docs()) &&
                 Objects.equals(get_title(), that.get_title()) &&
                 Objects.equals(get_desc(), that.get_desc()) &&
+                Objects.equals(get_subject(), that.get_subject()) &&
                 Objects.equals(get_assigned_date(), that.get_assigned_date()) &&
                 Objects.equals(get_due_date(), that.get_due_date());
     }
-
 
 
     // DiffUtil.ItemCallback

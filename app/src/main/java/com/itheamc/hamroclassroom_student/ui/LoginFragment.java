@@ -229,7 +229,6 @@ public class LoginFragment extends Fragment implements LoginCallbacks, Firestore
     @Override
     public void onLoginFailure(@NonNull String errorMessage) {
         if (loginBinding == null) return;
-
         ViewUtils.hideProgressBar(loginBinding.overlayLayout);
         ViewUtils.enableViews(loginBinding.facebookLoginButton, loginBinding.googleLoginButton);
         NotifyUtils.logDebug(TAG, errorMessage);
