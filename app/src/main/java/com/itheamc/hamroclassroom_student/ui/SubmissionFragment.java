@@ -178,12 +178,12 @@ public class SubmissionFragment extends Fragment implements StorageCallbacks, Fi
          */
         submissionBinding.imagePickerButton.setOnClickListener(v -> showImagePicker());
         submissionBinding.submitButton.setOnClickListener(v -> {
+            _submissionId = IdGenerator.generateId();
             if (!isInputsValid() && (imagesUri == null || imagesUri.size() < 1)) {
                 if (getContext() != null) NotifyUtils.showToast(getContext(), "Please write your views in the text box or pick images");
                 return;
             }
 
-            _submissionId = IdGenerator.generateId();
             ViewUtils.showProgressBar(submissionBinding.progressBarContainer);
             ViewUtils.disableViews(submissionBinding.submitButton, textInputLayout);
 
