@@ -6,6 +6,7 @@ import java.util.List;
 public class Teacher {
     private String _id;
     private String _name;
+    private String _gender;
     private String _image;
     private String _phone;
     private String _email;
@@ -20,9 +21,10 @@ public class Teacher {
 
 
     // Constructor with parameters
-    public Teacher(String _id, String _name, String _image, String _phone, String _email, String _address, List<String> _schools, List<String> _subjects, Date _joined_on) {
+    public Teacher(String _id, String _name, String _gender, String _image, String _phone, String _email, String _address, List<String> _schools, List<String> _subjects, Date _joined_on) {
         this._id = _id;
         this._name = _name;
+        this._gender = _gender;
         this._image = _image;
         this._phone = _phone;
         this._email = _email;
@@ -47,6 +49,14 @@ public class Teacher {
 
     public void set_name(String _name) {
         this._name = _name;
+    }
+
+    public String get_gender() {
+        return _gender;
+    }
+
+    public void set_gender(String _gender) {
+        this._gender = _gender;
     }
 
     public String get_image() {
@@ -111,6 +121,7 @@ public class Teacher {
         return "Teacher{" +
                 "_id='" + _id + '\'' +
                 ", _name='" + _name + '\'' +
+                ", _gender='" + _gender + '\'' +
                 ", _image='" + _image + '\'' +
                 ", _phone='" + _phone + '\'' +
                 ", _email='" + _email + '\'' +
