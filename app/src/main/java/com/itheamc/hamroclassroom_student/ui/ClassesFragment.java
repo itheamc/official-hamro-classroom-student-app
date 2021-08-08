@@ -143,8 +143,19 @@ public class ClassesFragment extends Fragment implements SubjectCallbacks, Fires
 
     @Override
     public void onJoinClassClick(int _position) {
+        List<Subject> subjects =  Subject.filterSubjects(viewModel.getSubjects());
+        Subject subject= subjects.get(_position);
+        String joinUrl = null;
+        if (subject == null) return;
+
+        joinUrl = subject.get_join_url();
+
+        if (joinUrl == null || joinUrl.isEmpty()) return;
+
+        if (!joinUrl.contains("https")) return;
+
         WebView webView = new WebView(getContext());
-        webView.loadUrl("https://meet.google.com/dai-yaxq-drn");
+        webView.loadUrl(joinUrl);
     }
 
 
