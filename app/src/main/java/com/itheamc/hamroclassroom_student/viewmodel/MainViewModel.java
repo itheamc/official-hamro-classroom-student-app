@@ -11,6 +11,7 @@ import com.itheamc.hamroclassroom_student.models.Teacher;
 import com.itheamc.hamroclassroom_student.models.User;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class MainViewModel extends ViewModel {
@@ -23,6 +24,7 @@ public class MainViewModel extends ViewModel {
     private Assignment assignment;
     private Submission submission;
     private School school;
+    private Notice notice;
 
     /*
     Lists
@@ -34,6 +36,11 @@ public class MainViewModel extends ViewModel {
     private List<Submission> allSubmissions;
     private List<Submission> submissions;
     private List<Notice> notices;
+
+    /*
+    Past Date
+     */
+    private long past_date;
 
 
     /*
@@ -85,6 +92,14 @@ public class MainViewModel extends ViewModel {
 
     public void setSchool(School school) {
         this.school = school;
+    }
+
+    public Notice getNotice() {
+        return notice;
+    }
+
+    public void setNotice(Notice notice) {
+        this.notice = notice;
     }
 
     public List<School> getSchools() {
@@ -143,9 +158,17 @@ public class MainViewModel extends ViewModel {
         this.notices = notices;
     }
 
+    public long get_past_date() {
+        return past_date;
+    }
+
+    public void set_past_date(long past_date) {
+        this.past_date = past_date;
+    }
+
     /*
-        Function to update subject in List<Subject> subjects
-         */
+                Function to update subject in List<Subject> subjects
+                 */
     public void modifySubjectItems(Subject _subject) {
         List<Subject> subjectList = new ArrayList<>();
         for (Subject sub: subjects) {

@@ -72,6 +72,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:spanCount="3"
+                tools:ignore="SpeakableTextPresentCheck"
                 tools:listitem="@layout/image_view" />
 
             <ImageButton

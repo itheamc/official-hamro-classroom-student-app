@@ -302,13 +302,13 @@ public class FirestoreHandler {
     }
 
     /**
-     * Function to get notifications list from the cloud firestore
+     * Function to get notices list from the cloud firestore
      * --------------------------------------------------------------------------------------
      */
-    public void getNotifications(String schoolId, String _class) {
-        firestore.collection("notifications")
-                .whereArrayContains("_school", schoolId)
-                .whereEqualTo("_class", _class)
+    public void getNotices(String schoolId, String _class) {
+        firestore.collection("notices")
+                .whereEqualTo("_school", schoolId)
+                .whereArrayContains("_classes", _class)
                 .get()
                 .addOnSuccessListener(executorService, queryDocumentSnapshots -> {
                     if (queryDocumentSnapshots != null) {
