@@ -49,8 +49,8 @@ public class ClassesAdapter extends ListAdapter<Subject, ClassesAdapter.ClassesV
 
             // Implementing OnClickListener on Views
             this.viewBinding.joinButton.setOnClickListener(this);
-            this.viewBinding.assignmentsButton.setOnClickListener(this);
             this.viewBinding.subjectCardView.setOnClickListener(this);
+            this.viewBinding.copyLink.setOnClickListener(this);
             this.viewBinding.subjectCardView.setOnLongClickListener(this);
         }
 
@@ -58,8 +58,8 @@ public class ClassesAdapter extends ListAdapter<Subject, ClassesAdapter.ClassesV
         public void onClick(View v) {
             int _id = v.getId();
             if (_id == viewBinding.joinButton.getId()) callbacks.onJoinClassClick(getAdapterPosition());
-            else if (_id == viewBinding.assignmentsButton.getId()) callbacks.onAssignmentsClick(getAdapterPosition());
             else if (_id == viewBinding.subjectCardView.getId()) callbacks.onClick(getAdapterPosition());
+            else if (_id == viewBinding.copyLink.getId()) callbacks.onCopyClick(getAdapterPosition());
             else NotifyUtils.logDebug(TAG, "Unspecified view is clicked!!");
         }
 

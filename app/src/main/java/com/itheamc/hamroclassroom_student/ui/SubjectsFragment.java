@@ -149,7 +149,7 @@ public class SubjectsFragment extends Fragment implements SubjectCallbacks, Fire
     }
 
     @Override
-    public void onAssignmentsClick(int _position) {
+    public void onCopyClick(int _position) {
 
     }
 

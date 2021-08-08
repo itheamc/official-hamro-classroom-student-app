@@ -1,5 +1,8 @@
 package com.itheamc.hamroclassroom_student.ui;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -152,16 +155,37 @@ public class ClassesFragment extends Fragment implements SubjectCallbacks, Fires
 
         if (joinUrl == null || joinUrl.isEmpty()) return;
 
-        if (!joinUrl.contains("https")) return;
+        if (!joinUrl.contains("https")) joinUrl = "https://" + joinUrl;
 
         WebView webView = new WebView(getContext());
         webView.loadUrl(joinUrl);
     }
 
-
     @Override
-    public void onAssignmentsClick(int _position) {
+    public void onCopyClick(int _position) {
+        // Gets a handle to the clipboard service.
+        if (getActivity() == null) return;
 
+        List<Subject> subjects =  Subject.filterSubjects(viewModel.getSubjects());
+        Subject subject= subjects.get(_position);
+        String joinUrl = null;
+        if (subject == null) return;
+
+        joinUrl = subject.get_join_url();
+
+        if (joinUrl == null || joinUrl.isEmpty()) return;
+
+        if (!joinUrl.contains("https")) joinUrl = "https://" + joinUrl;
+
+        // Link Code
+        String linkCode = joinUrl;
+        if (joinUrl.contains("google")) linkCode = linkCode.substring(24);
+
+        ClipboardManager clipboard = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
+        // Creates a new text clip to put on the clipboard
+        ClipData clip = ClipData.newPlainText("link-code", linkCode);
+        clipboard.setPrimaryClip(clip);
+        NotifyUtils.showToast(getContext(), "Copied");
     }
 
     @Override
