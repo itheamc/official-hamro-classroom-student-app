@@ -3,6 +3,8 @@ package com.itheamc.hamroclassroom_student.ui;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -157,8 +159,9 @@ public class ClassesFragment extends Fragment implements SubjectCallbacks, Fires
 
         if (!joinUrl.contains("https")) joinUrl = "https://" + joinUrl;
 
-        WebView webView = new WebView(getContext());
-        webView.loadUrl(joinUrl);
+        Uri uri = Uri.parse(joinUrl);
+        Intent intent= new Intent(Intent.ACTION_VIEW,uri);
+        startActivity(intent);
     }
 
     @Override
