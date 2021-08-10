@@ -223,7 +223,7 @@ public class SubmitFragment extends Fragment implements StorageCallbacks, Firest
             StorageHandler.getInstance(this)
                     .uploadImage(bitmap,
                             "image" + "-" + (uploadCount + 1) + ".jpg",
-                            assignment.get_subject(),
+                            assignment.get_subject_ref(),
                             assignment.get_id(),
                             _submissionId);
         }
@@ -237,27 +237,28 @@ public class SubmitFragment extends Fragment implements StorageCallbacks, Firest
     private void storeOnFirestore() {
         submitBinding.uploadedProgress.setText(R.string.finalizing_uploads);
         User user = viewModel.getUser();
+
+        Assignment ass = viewModel.getAssignment();
+        String assId = ass.get_id();
+
         // Creating new assignment object
         Submission submission = new Submission(
                 _submissionId,
                 imagesList,
                 new ArrayList<>(),
                 _text,
-                Arrays.asList(user.get_id(), user.get_name()),
+                assId,
+                null,
+                user.get_id(),
+                null,
                 new Date(),
                 new Date(),
                 false,
                 "No Comment"
         );
 
-
-        Assignment ass = viewModel.getAssignment();
-        if (ass != null) {
-            String assId = ass.get_id();
-            String subId = ass.get_subject();
-            FirestoreHandler.getInstance(this)
-                    .addSubmission(subId, assId, submission);
-        }
+        FirestoreHandler.getInstance(this)
+                .addSubmission(submission);
 
     }
 
@@ -272,7 +273,7 @@ public class SubmitFragment extends Fragment implements StorageCallbacks, Firest
             return;
         }
         User user = viewModel.getUser();
-        FirestoreHandler.getInstance(this).addSubmissionToUser(user.get_id(), ass.get_subject() + "___" + ass.get_id());
+        FirestoreHandler.getInstance(this).addSubmissionToUser(user.get_id(), _submissionId);
     }
 
 

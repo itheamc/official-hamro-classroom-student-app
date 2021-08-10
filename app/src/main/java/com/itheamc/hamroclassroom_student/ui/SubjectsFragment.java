@@ -115,7 +115,7 @@ public class SubjectsFragment extends Fragment implements SubjectCallbacks, Fire
             retrieveUser();
             return;
         }
-        FirestoreHandler.getInstance(this).getSubjects(user.get_school(), user.get_class());
+        FirestoreHandler.getInstance(this).getSubjects(user.get_school_ref(), user.get_class());
         ViewUtils.showProgressBar(subjectsBinding.subjectsOverlayLayLayout);
     }
 
@@ -172,7 +172,7 @@ public class SubjectsFragment extends Fragment implements SubjectCallbacks, Fire
 
         Subject subject = subjects.get(_position);
         User user = viewModel.getUser();
-        List<String> subjectIds = user.get_subjects();
+        List<String> subjectIds = user.get_subjects_ref();
 
         if (subject.is_added()) {
             subject.set_added(false);
@@ -184,7 +184,7 @@ public class SubjectsFragment extends Fragment implements SubjectCallbacks, Fire
         }
 
         // Updating to the view model
-        user.set_subjects(subjectIds);
+        user.set_subjects_ref(subjectIds);
         viewModel.setUser(user);
         viewModel.modifySubjectItems(subject);
 
@@ -249,7 +249,7 @@ public class SubjectsFragment extends Fragment implements SubjectCallbacks, Fire
         List<Subject> processedSubjects = new ArrayList<>();
 
         if (user != null) {
-            subject_ids = user.get_subjects();
+            subject_ids = user.get_subjects_ref();
         }
 
         for (Subject subject: subjects) {

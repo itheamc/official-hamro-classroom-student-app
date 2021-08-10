@@ -15,7 +15,8 @@ public class School {
     private String _address;
     private String _website;
     private String _icon;
-    private List<String> _principals;
+    private String _principal_ref;
+    private User _principal;
     private Date _established_on;
     private Date _joined_on;
     private int _students;
@@ -26,7 +27,7 @@ public class School {
     }
 
     // Constructor with parameters
-    public School(String _id, String _name, String _phone, String _email, String _address, String _website, String _icon, List<String> _principals, Date _established_on, Date _joined_on, int _students, int _teachers) {
+    public School(String _id, String _name, String _phone, String _email, String _address, String _website, String _icon, String _principal_ref, User _principal, Date _established_on, Date _joined_on, int _students, int _teachers) {
         this._id = _id;
         this._name = _name;
         this._phone = _phone;
@@ -34,7 +35,8 @@ public class School {
         this._address = _address;
         this._website = _website;
         this._icon = _icon;
-        this._principals = _principals;
+        this._principal_ref = _principal_ref;
+        this._principal = _principal;
         this._established_on = _established_on;
         this._joined_on = _joined_on;
         this._students = _students;
@@ -98,12 +100,20 @@ public class School {
         this._icon = _icon;
     }
 
-    public List<String> get_principals() {
-        return _principals;
+    public String get_principal_ref() {
+        return _principal_ref;
     }
 
-    public void set_principals(List<String> _principals) {
-        this._principals = _principals;
+    public void set_principal_ref(String _principal_ref) {
+        this._principal_ref = _principal_ref;
+    }
+
+    public User get_principal() {
+        return _principal;
+    }
+
+    public void set_principal(User _principal) {
+        this._principal = _principal;
     }
 
     public Date get_established_on() {
@@ -149,7 +159,8 @@ public class School {
                 ", _address='" + _address + '\'' +
                 ", _website='" + _website + '\'' +
                 ", _icon='" + _icon + '\'' +
-                ", _principals=" + _principals +
+                ", _principal_ref='" + _principal_ref + '\'' +
+                ", _principal=" + _principal +
                 ", _established_on=" + _established_on +
                 ", _joined_on=" + _joined_on +
                 ", _students=" + _students +
@@ -172,10 +183,12 @@ public class School {
                 Objects.equals(get_address(), school.get_address()) &&
                 Objects.equals(get_website(), school.get_website()) &&
                 Objects.equals(get_icon(), school.get_icon()) &&
-                Objects.equals(get_principals(), school.get_principals()) &&
+                Objects.equals(get_principal_ref(), school.get_principal_ref()) &&
+                Objects.equals(get_principal(), school.get_principal()) &&
                 Objects.equals(get_established_on(), school.get_established_on()) &&
                 Objects.equals(get_joined_on(), school.get_joined_on());
     }
+
 
 
     // DiffUtil.ItemCallback object

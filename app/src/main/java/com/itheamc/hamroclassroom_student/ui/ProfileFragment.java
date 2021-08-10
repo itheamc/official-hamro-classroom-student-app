@@ -93,7 +93,7 @@ public class ProfileFragment extends Fragment implements FirestoreCallbacks {
                 ViewUtils.visibleViews(profileBinding.idCardView);
                 return;
             }
-            FirestoreHandler.getInstance(this).getSchool(user.get_school());
+            FirestoreHandler.getInstance(this).getSchool(user.get_school_ref());
             ViewUtils.showProgressBar(profileBinding.profileOverlayLayLayout);
         }
     }

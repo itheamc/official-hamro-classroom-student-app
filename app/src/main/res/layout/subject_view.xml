@@ -78,7 +78,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:contentDescription="TODO"
-                        android:imageSource="@{subject._teacher.get(2)}"
+                        android:imageSource="@{subject._teacher._image}"
                         android:scaleType="centerCrop"
                         tools:ignore="ImageContrastCheck"
                         tools:srcCompat="@tools:sample/avatars" />
@@ -90,7 +90,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="4dp"
                     android:fontFamily="sans-serif-condensed"
-                    android:text="@{subject._teacher.get(1)}"
+                    android:text="@{subject._teacher._name}"
                     android:textSize="14sp"
                     app:layout_constraintBottom_toBottomOf="@+id/teacherImageCardView"
                     app:layout_constraintStart_toEndOf="@+id/teacherImageCardView"

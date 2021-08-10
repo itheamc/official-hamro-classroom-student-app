@@ -191,8 +191,11 @@ public class RegisterFragment extends Fragment implements FirestoreCallbacks, Sc
                     _section,
                     _rollNo,
                     school.get_id(),
+                    null,
                     new ArrayList<>(),
+                    null,
                     new ArrayList<>(),
+                    null,
                     new Date()
             );
 

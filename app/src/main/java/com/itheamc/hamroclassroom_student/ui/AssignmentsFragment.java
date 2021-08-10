@@ -1,7 +1,6 @@
 package com.itheamc.hamroclassroom_student.ui;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,7 +32,6 @@ import com.itheamc.hamroclassroom_student.viewmodel.MainViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 
 public class AssignmentsFragment extends Fragment implements FirestoreCallbacks, AssignmentCallbacks {
@@ -149,7 +147,7 @@ public class AssignmentsFragment extends Fragment implements FirestoreCallbacks,
             return;
         }
 
-        FirestoreHandler.getInstance(this).getSubjects(user.get_school(), user.get_class());
+        FirestoreHandler.getInstance(this).getSubjects(user.get_school_ref(), user.get_class());
         ViewUtils.showProgressBar(assignmentsBinding.assignmentsOverlayLayLayout);
     }
 

@@ -134,7 +134,7 @@ public class SubmissionsFragment extends Fragment implements FirestoreCallbacks,
      */
     private void checksSubmissions() {
         User user = viewModel.getUser();
-        submissionsIds = user.get_submissions();
+        submissionsIds = user.get_submissions_ref();
         if (submissionsIds == null || submissionsIds.isEmpty()) {
             hideProgressBar();
             return;

@@ -133,7 +133,7 @@ public class NoticesFragment extends Fragment implements FirestoreCallbacks, Not
      * Function to retrieve notices
      */
     private void retrieveNotices(@NonNull User user) {
-        String schoolId = user.get_school();
+        String schoolId = user.get_school_ref();
         String _class = user.get_class();
         if ((schoolId == null || schoolId.isEmpty()) || (_class == null || _class.isEmpty())) {
             hideProgress();

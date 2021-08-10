@@ -46,6 +46,9 @@ public class ClassesFragment extends Fragment implements SubjectCallbacks, Fires
     private NavController navController;
     private MainViewModel viewModel;
     private ClassesAdapter classesAdapter;
+    private List<Subject> rawSubjectsList;
+    private List<Subject> subjectList;
+    private int position;
 
 
 
@@ -75,6 +78,10 @@ public class ClassesFragment extends Fragment implements SubjectCallbacks, Fires
         // Initializing NavController and ViewModel
         navController = Navigation.findNavController(view);
         viewModel = new ViewModelProvider(requireActivity()).get(MainViewModel.class);
+
+        // Initialize Arraylist
+        rawSubjectsList = new ArrayList<>();
+        subjectList = new ArrayList<>();
 
         classesAdapter = new ClassesAdapter(this);
         classesBinding.recyclerView.setAdapter(classesAdapter);
@@ -129,7 +136,7 @@ public class ClassesFragment extends Fragment implements SubjectCallbacks, Fires
             return;
         }
 
-        FirestoreHandler.getInstance(this).getSubjects(user.get_school(), user.get_class());
+        FirestoreHandler.getInstance(this).getSubjects(user.get_school_ref(), user.get_class());
         ViewUtils.showProgressBar(classesBinding.classesOverlayLayLayout);
     }
 
@@ -231,9 +238,24 @@ public class ClassesFragment extends Fragment implements SubjectCallbacks, Fires
             ViewUtils.hideProgressBar(classesBinding.classesOverlayLayLayout);
             ViewUtils.handleRefreshing(classesBinding.classesSwipeRefreshLayout);
             if (!subjects.isEmpty()) {
-                handleSubjects(subjects);
+                rawSubjectsList.addAll(subjects);
+                handleTeacher();
             }
+            return;
         }
+
+        // If Assignment is retrieved
+        if (teacher != null) {
+            Subject subject = rawSubjectsList.get(position);
+            subject.set_teacher(teacher);
+            subjectList.add(subject);
+            position += 1;
+            handleTeacher();
+            return;
+        }
+
+        ViewUtils.hideProgressBar(classesBinding.classesOverlayLayLayout);
+        ViewUtils.handleRefreshing(classesBinding.classesSwipeRefreshLayout);
     }
 
     @Override
@@ -244,6 +266,22 @@ public class ClassesFragment extends Fragment implements SubjectCallbacks, Fires
         ViewUtils.hideProgressBar(classesBinding.classesOverlayLayLayout);
     }
 
+
+    /**
+     * Function to retrieve teacher and add to the subject
+     */
+    private void handleTeacher() {
+        if (position < rawSubjectsList.size()) {
+            String teacher_ref = rawSubjectsList.get(position).get_teacher_ref();
+            FirestoreHandler.getInstance(this).getTeacher(teacher_ref);
+            return;
+        }
+
+        position = 0;
+        ViewUtils.hideProgressBar(classesBinding.classesOverlayLayLayout);
+        ViewUtils.handleRefreshing(classesBinding.classesSwipeRefreshLayout);
+        handleSubjects(rawSubjectsList);
+    }
 
 
     /**

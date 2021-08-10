@@ -19,8 +19,8 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
-import com.itheamc.hamroclassroom_student.R;
 import com.itheamc.hamroclassroom_student.callbacks.LoginCallbacks;
+import com.itheamc.hamroclassroom_student.utils.Constants;
 import com.itheamc.hamroclassroom_student.utils.NotifyUtils;
 
 import java.util.concurrent.ExecutorService;
@@ -78,7 +78,7 @@ public class LoginHandler {
         GoogleSignInOptions signInOptions = new GoogleSignInOptions
                 .Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
-                .requestIdToken(fragment.getActivity().getResources().getString(R.string.web_client_id))
+                .requestIdToken(Constants.WEB_CLIENT_ID)
                 .build();
 
         // Build a GoogleSignInClient with the options specified by gso.

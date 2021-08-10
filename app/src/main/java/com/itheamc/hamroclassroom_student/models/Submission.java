@@ -15,7 +15,10 @@ public class Submission {
     private List<String> _images;
     private List<String> _docs;
     private String _texts;
-    private List<String> _submitted_by;     // Name and id of the student
+    private String _assignment_ref;
+    private Assignment _assignment;
+    private String _student_ref;
+    private User _student;
     private Date _submitted_date;
     private Date _checked_date;
     private boolean _checked;
@@ -26,12 +29,15 @@ public class Submission {
     }
 
     // Constructor with parameters
-    public Submission(String _id, List<String> _images, List<String> _docs, String _texts, List<String> _submitted_by, Date _submitted_date, Date _checked_date, boolean _checked, String _comment) {
+    public Submission(String _id, List<String> _images, List<String> _docs, String _texts, String _assignment_ref, Assignment _assignment, String _student_ref, User _student, Date _submitted_date, Date _checked_date, boolean _checked, String _comment) {
         this._id = _id;
         this._images = _images;
         this._docs = _docs;
         this._texts = _texts;
-        this._submitted_by = _submitted_by;
+        this._assignment_ref = _assignment_ref;
+        this._assignment = _assignment;
+        this._student_ref = _student_ref;
+        this._student = _student;
         this._submitted_date = _submitted_date;
         this._checked_date = _checked_date;
         this._checked = _checked;
@@ -71,12 +77,36 @@ public class Submission {
         this._texts = _texts;
     }
 
-    public List<String> get_submitted_by() {
-        return _submitted_by;
+    public String get_assignment_ref() {
+        return _assignment_ref;
     }
 
-    public void set_submitted_by(List<String> _submitted_by) {
-        this._submitted_by = _submitted_by;
+    public void set_assignment_ref(String _assignment_ref) {
+        this._assignment_ref = _assignment_ref;
+    }
+
+    public Assignment get_assignment() {
+        return _assignment;
+    }
+
+    public void set_assignment(Assignment _assignment) {
+        this._assignment = _assignment;
+    }
+
+    public String get_student_ref() {
+        return _student_ref;
+    }
+
+    public void set_student_ref(String _student_ref) {
+        this._student_ref = _student_ref;
+    }
+
+    public User get_student() {
+        return _student;
+    }
+
+    public void set_student(User _student) {
+        this._student = _student;
     }
 
     public Date get_submitted_date() {
@@ -119,7 +149,10 @@ public class Submission {
                 ", _images=" + _images +
                 ", _docs=" + _docs +
                 ", _texts='" + _texts + '\'' +
-                ", _submitted_by=" + _submitted_by +
+                ", _assignment_ref='" + _assignment_ref + '\'' +
+                ", _assignment=" + _assignment +
+                ", _student_ref='" + _student_ref + '\'' +
+                ", _student=" + _student +
                 ", _submitted_date=" + _submitted_date +
                 ", _checked_date=" + _checked_date +
                 ", _checked=" + _checked +
@@ -128,6 +161,8 @@ public class Submission {
     }
 
     // Overriding equals() method
+
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -138,11 +173,15 @@ public class Submission {
                 Objects.equals(get_images(), that.get_images()) &&
                 Objects.equals(get_docs(), that.get_docs()) &&
                 Objects.equals(get_texts(), that.get_texts()) &&
-                Objects.equals(get_submitted_by(), that.get_submitted_by()) &&
+                Objects.equals(get_assignment_ref(), that.get_assignment_ref()) &&
+                Objects.equals(get_assignment(), that.get_assignment()) &&
+                Objects.equals(get_student_ref(), that.get_student_ref()) &&
+                Objects.equals(get_student(), that.get_student()) &&
                 Objects.equals(get_submitted_date(), that.get_submitted_date()) &&
                 Objects.equals(get_checked_date(), that.get_checked_date()) &&
                 Objects.equals(get_comment(), that.get_comment());
     }
+
 
     // DiffUtil.ItemCallback
     public static DiffUtil.ItemCallback<Submission> submissionItemCallback = new DiffUtil.ItemCallback<Submission>() {
