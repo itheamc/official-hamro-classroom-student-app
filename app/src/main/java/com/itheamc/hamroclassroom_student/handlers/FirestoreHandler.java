@@ -20,6 +20,7 @@ import com.itheamc.hamroclassroom_student.models.Submission;
 import com.itheamc.hamroclassroom_student.models.Teacher;
 import com.itheamc.hamroclassroom_student.models.User;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
@@ -229,6 +230,49 @@ public class FirestoreHandler {
 
 
     /**
+     * Function to get assignment from the cloud firestore
+     * --------------------------------------------------------------------------------------
+     */
+    public void getAssignment(String assignment_ref) {
+        firestore.collection("assignments")
+                .document(assignment_ref)
+                .get()
+                .addOnSuccessListener(executorService, assignmentSnapshot -> {
+                    if (assignmentSnapshot != null) {
+                        List<Assignment> assignments = new ArrayList<>();
+                        Assignment assignment = assignmentSnapshot.toObject(Assignment.class);
+
+                        // Retrieving Subject
+                        if (assignment != null) {
+                            String sub_ref = assignment.get_subject_ref();
+                            firestore.collection("subjects")
+                                    .document(sub_ref)
+                                    .get()
+                                    .addOnSuccessListener(executorService, subjectSnapshot -> {
+                                        Subject subject = null;
+                                        if (subjectSnapshot != null) {
+                                            subject = subjectSnapshot.toObject(Subject.class);
+                                        } else {
+                                            subject = new Subject();
+                                            subject.set_name("Unknown");
+                                        }
+                                        assignment.set_subject(subject);
+                                        assignments.add(assignment);
+                                        notifyOnSuccess(null, null, null, null, null, assignments, null, null);
+                                    })
+                                    .addOnFailureListener(executorService, this::notifyOnFailure);
+                        } else {
+                            notifyOnFailure(new Exception("Something went wrong!!"));
+                        }
+                    } else {
+                        notifyOnFailure(new Exception("Assignments not found"));
+                    }
+                })
+                .addOnFailureListener(executorService, this::notifyOnFailure);
+    }
+
+
+    /**
      * Function to add submissions in the Firestore
      * --------------------------------------------------------------------------------------
      */
@@ -272,19 +316,15 @@ public class FirestoreHandler {
      * Function to get submission from the Firestore
      * --------------------------------------------------------------------------------------
      */
-    public void getSubmission(String subjectId, String assignmentId, String userId) {
-        firestore.collection("subjects")
-                .document(subjectId)
-                .collection("assignments")
-                .document(assignmentId)
-                .collection("submissions")
-                .whereArrayContains("_submitted_by", userId)
+    public void getSubmissions(String userId) {
+        firestore.collection("submissions")
+                .whereEqualTo("_student_ref", userId)
                 .get()
                 .addOnSuccessListener(executorService, queryDocumentSnapshots -> {
                     if (queryDocumentSnapshots != null) {
                         List<Submission> submissions = queryDocumentSnapshots.toObjects(Submission.class);
                         if (submissions.size() > 0) {
-                            notifyOnSuccess(null, null, null, null, null, null, submissions.get(0), null);
+                            notifyOnSuccess(null, null, null, null, null, null, submissions, null);
                         } else {
                             notifyOnFailure(new Exception("Submission not found"));
                         }
@@ -388,7 +428,7 @@ public class FirestoreHandler {
                                  List<School> schools,
                                  List<Subject> subjects,
                                  List<Assignment> assignments,
-                                 Submission submissions,
+                                 List<Submission> submissions,
                                  List<Notice> notices) {
         handler.post(() -> {
             callbacks.onSuccess(user, teacher, school, schools, subjects, assignments, submissions, notices);

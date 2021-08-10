@@ -101,12 +101,7 @@ public class AssignmentsFragment extends Fragment implements FirestoreCallbacks,
 
 
         // Checks User for assignment extraction
-        List<Assignment> storedAssignment = viewModel.getAllAssignments();
-        if (storedAssignment != null && !storedAssignment.isEmpty()) {
-            assignmentAdapter.submitList(storedAssignment);
-        } else {
-            checksUser();
-        }
+        checksUser();
     }
 
 
@@ -141,14 +136,22 @@ public class AssignmentsFragment extends Fragment implements FirestoreCallbacks,
                 return;
             }
 
-            ViewUtils.visibleViews(assignmentsBinding.noAssignmentsLayout);
-            ViewUtils.hideProgressBar(assignmentsBinding.assignmentsOverlayLayLayout);
-            ViewUtils.handleRefreshing(assignmentsBinding.assignmentsSwipeRefreshLayout);
+           viewsOnCompletedOrFailure();     // ProgressBar, NoItemView and Stop Refreshing
             return;
         }
 
         FirestoreHandler.getInstance(this).getSubjects(user.get_school_ref(), user.get_class());
         ViewUtils.showProgressBar(assignmentsBinding.assignmentsOverlayLayLayout);
+    }
+
+
+    /*
+    Handle views
+     */
+    private void viewsOnCompletedOrFailure() {
+        ViewUtils.visibleViews(assignmentsBinding.noAssignmentsLayout);
+        ViewUtils.hideProgressBar(assignmentsBinding.assignmentsOverlayLayLayout);
+        ViewUtils.handleRefreshing(assignmentsBinding.assignmentsSwipeRefreshLayout);
     }
 
 
@@ -200,9 +203,8 @@ public class AssignmentsFragment extends Fragment implements FirestoreCallbacks,
      * @param submissions - It is the  list of submissions
      * @param notices     - It is the  list of notices
      */
-
     @Override
-    public void onSuccess(User user, Teacher teacher, School school, List<School> schools, List<Subject> subjects, List<Assignment> assignments, Submission submissions, List<Notice> notices) {
+    public void onSuccess(User user, Teacher teacher, School school, List<School> schools, List<Subject> subjects, List<Assignment> assignments, List<Submission> submissions, List<Notice> notices) {
         if (assignmentsBinding == null) return;
 
         // If User retrieved from the Firestore
@@ -216,17 +218,19 @@ public class AssignmentsFragment extends Fragment implements FirestoreCallbacks,
         if (subjects != null) {
             if (!subjects.isEmpty()) {
                 handleSubjects(subjects);
-            } else {
-                ViewUtils.hideProgressBar(assignmentsBinding.assignmentsOverlayLayLayout);
-                ViewUtils.handleRefreshing(assignmentsBinding.assignmentsSwipeRefreshLayout);
+                return;
             }
+            viewsOnCompletedOrFailure();     // ProgressBar, NoItemView and Stop Refreshing
             return;
         }
 
         // If Assignment is retrieved
         if (assignments != null) {
             if (!assignments.isEmpty()) {
-                listOfAssignments.addAll(assignments);
+                for (Assignment a: assignments) {
+                    a.set_subject(filteredSubjects.get(position));
+                    listOfAssignments.add(a);
+                }
             }
 
             position += 1;
@@ -241,10 +245,7 @@ public class AssignmentsFragment extends Fragment implements FirestoreCallbacks,
     @Override
     public void onFailure(Exception e) {
         if (assignmentsBinding == null) return;
-        ViewUtils.handleRefreshing(assignmentsBinding.assignmentsSwipeRefreshLayout);
-        ViewUtils.hideProgressBar(assignmentsBinding.assignmentsOverlayLayLayout);
-
-        ViewUtils.visibleViews(assignmentsBinding.noAssignmentsLayout);
+        viewsOnCompletedOrFailure();     // ProgressBar, NoItemView and Stop Refreshing
         if (e.getMessage() == null) return;
         if (getContext() != null) NotifyUtils.showToast(getContext(), e.getMessage());
     }
@@ -266,16 +267,12 @@ public class AssignmentsFragment extends Fragment implements FirestoreCallbacks,
             if (!filteredSubjects.isEmpty()) {
                 retrieveAssignments();
             } else {
-                ViewUtils.visibleViews(assignmentsBinding.noAssignmentsLayout);
-                ViewUtils.hideProgressBar(assignmentsBinding.assignmentsOverlayLayLayout);
-                ViewUtils.handleRefreshing(assignmentsBinding.assignmentsSwipeRefreshLayout);
+                viewsOnCompletedOrFailure();     // ProgressBar, NoItemView and Stop Refreshing
             }
             return;
         }
 
-        ViewUtils.visibleViews(assignmentsBinding.noAssignmentsLayout);
-        ViewUtils.hideProgressBar(assignmentsBinding.assignmentsOverlayLayLayout);
-        ViewUtils.handleRefreshing(assignmentsBinding.assignmentsSwipeRefreshLayout);
+        viewsOnCompletedOrFailure();     // ProgressBar, NoItemView and Stop Refreshing
     }
 
     /**

@@ -210,9 +210,8 @@ public class SubjectsFragment extends Fragment implements SubjectCallbacks, Fire
      * @param submissions - it is the instance of the List<Submission>
      * @param notices - it is the instance of the List<Notice>
      */
-
     @Override
-    public void onSuccess(User user, Teacher teacher, School school, List<School> schools, List<Subject> subjects, List<Assignment> assignments, Submission submissions, List<Notice> notices) {
+    public void onSuccess(User user, Teacher teacher, School school, List<School> schools, List<Subject> subjects, List<Assignment> assignments, List<Submission> submissions, List<Notice> notices) {
         if (subjectsBinding == null) return;
 
         // If User retrieved from the Firestore
@@ -238,6 +237,12 @@ public class SubjectsFragment extends Fragment implements SubjectCallbacks, Fire
         passDataToRecyclerView();
     }
 
+    @Override
+    public void onFailure(Exception e) {
+        if (subjectsBinding == null) return;
+        if (getContext() != null) NotifyUtils.showToast(getContext(), e.getMessage());
+        ViewUtils.hideProgressBar(subjectsBinding.subjectsOverlayLayLayout);
+    }
 
     /**
      * ----------------------------------------------------------------------
@@ -259,12 +264,5 @@ public class SubjectsFragment extends Fragment implements SubjectCallbacks, Fire
 
         viewModel.setSubjects(processedSubjects);
         passDataToRecyclerView();
-    }
-
-    @Override
-    public void onFailure(Exception e) {
-        if (subjectsBinding == null) return;
-        if (getContext() != null) NotifyUtils.showToast(getContext(), e.getMessage());
-        ViewUtils.hideProgressBar(subjectsBinding.subjectsOverlayLayLayout);
     }
 }

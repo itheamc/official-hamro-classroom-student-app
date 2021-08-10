@@ -68,7 +68,6 @@ public class HomeFragment extends Fragment implements FirestoreCallbacks, View.O
         // Setting greeting label text
         homeBinding.greetingLabel.setText(OtherUtils.showGreeting());
 
-        if (viewModel.getUser() != null) homeBinding.userName.setText(viewModel.getUser().get_name().split(" ")[0]);
 
         // Setting OnClickListener on Views
         homeBinding.userIconCardView.setOnClickListener(this);
@@ -78,7 +77,11 @@ public class HomeFragment extends Fragment implements FirestoreCallbacks, View.O
         homeBinding.noticesCardView.setOnClickListener(this);
 
         // Retrieving user
-        retrieveUser();
+        if (viewModel.getUser() != null) {
+            setUserData(viewModel.getUser());
+        } else {
+            retrieveUser();
+        }
     }
 
     /**
@@ -88,6 +91,15 @@ public class HomeFragment extends Fragment implements FirestoreCallbacks, View.O
         String userId = null;
         if (getActivity() != null) userId = LocalStorage.getInstance(getActivity()).getUserId();
         if (userId != null) FirestoreHandler.getInstance(this).getUser(userId);
+    }
+
+    /**
+     * Function to pass data on the views
+     */
+    private void setUserData(User user) {
+        Picasso.get().load(user.get_image())
+                .into(homeBinding.userIcon);
+        homeBinding.userName.setText(user.get_name().split(" ")[0]);
     }
 
 
@@ -135,16 +147,13 @@ public class HomeFragment extends Fragment implements FirestoreCallbacks, View.O
      * @param submissions - it is the instance of the List<Submission>
      * @param notices - it is the instance of the List<Notice>
      */
-
     @Override
-    public void onSuccess(User user, Teacher teacher, School school, List<School> schools, List<Subject> subjects, List<Assignment> assignments, Submission submissions, List<Notice> notices) {
+    public void onSuccess(User user, Teacher teacher, School school, List<School> schools, List<Subject> subjects, List<Assignment> assignments, List<Submission> submissions, List<Notice> notices) {
         if (homeBinding == null) return;
         // If User retrieved from the Firestore
         if (user != null) {
             viewModel.setUser(user);
-            Picasso.get().load(user.get_image())
-                    .into(homeBinding.userIcon);
-            homeBinding.userName.setText(user.get_name().split(" ")[0]);
+            setUserData(user);
         }
     }
 

@@ -221,9 +221,8 @@ public class ClassesFragment extends Fragment implements SubjectCallbacks, Fires
      * @param submissions - it is the instance of the List<Submission>
      * @param notices - it is the instance of the List<Notice>
      */
-
     @Override
-    public void onSuccess(User user, Teacher teacher, School school, List<School> schools, List<Subject> subjects, List<Assignment> assignments, Submission submissions, List<Notice> notices) {
+    public void onSuccess(User user, Teacher teacher, School school, List<School> schools, List<Subject> subjects, List<Assignment> assignments, List<Submission> submissions, List<Notice> notices) {
         if (classesBinding == null) return;
 
         // If User retrieved from the Firestore

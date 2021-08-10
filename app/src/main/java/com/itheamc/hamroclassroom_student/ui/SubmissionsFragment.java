@@ -45,7 +45,7 @@ public class SubmissionsFragment extends Fragment implements FirestoreCallbacks,
     /*
     Lists
      */
-    private List<String> submissionsIds;
+    private List<Submission> rawSubmissions;
     private List<Submission> listOfSubmissions;
     private int position = 0;
 
@@ -83,15 +83,14 @@ public class SubmissionsFragment extends Fragment implements FirestoreCallbacks,
         submissionsBinding.submissionsRecyclerView.setAdapter(submissionAdapter);
 
         // Initializing filteredSubjects
-        submissionsIds = new ArrayList<>();
+        rawSubmissions = new ArrayList<>();
         listOfSubmissions = new ArrayList<>();
 
 
         // Setting swipe and refresh layout
         submissionsBinding.submissionsSwipeRefreshLayout.setOnRefreshListener(() -> {
+            rawSubmissions = new ArrayList<>();
             listOfSubmissions = new ArrayList<>();
-            submissionsIds = new ArrayList<>();
-            viewModel.setAllSubmissions(null);
             position = 0;
             ViewUtils.hideViews(submissionsBinding.noSubmissionLayout);
             checksUser();
@@ -104,10 +103,11 @@ public class SubmissionsFragment extends Fragment implements FirestoreCallbacks,
 
 
         // Checking if submissions are already stored in the viewModel or not
-        List<Submission> storedSubmissions = viewModel.getAllSubmissions();
-        if (storedSubmissions != null && !storedSubmissions.isEmpty()) {
-            submissionAdapter.submitList(storedSubmissions);
+        listOfSubmissions = viewModel.getAllSubmissions();
+        if (listOfSubmissions != null && !listOfSubmissions.isEmpty()) {
+            submissionAdapter.submitList(listOfSubmissions);
         } else {
+            listOfSubmissions = new ArrayList<>();
             checksUser();
         }
     }
@@ -125,46 +125,32 @@ public class SubmissionsFragment extends Fragment implements FirestoreCallbacks,
             return;
         }
 
-        checksSubmissions();
+        retrieveSubmissions(user);
         showProgressBar();
     }
 
-    /*
-    Function to check whether user has any submissions or not
-     */
-    private void checksSubmissions() {
-        User user = viewModel.getUser();
-        submissionsIds = user.get_submissions_ref();
-        if (submissionsIds == null || submissionsIds.isEmpty()) {
-            hideProgressBar();
-            return;
-        }
-
-        retrieveSubmissions();
-    }
 
     /*
     Function to retrieve submissions
      */
-    private void retrieveSubmissions() {
-        if (position >= submissionsIds.size()) {
-            position = 0;
-            hideProgressBar();
-            if (listOfSubmissions != null && !listOfSubmissions.isEmpty()) {
-                submissionAdapter.submitList(listOfSubmissions);
-                viewModel.setAllSubmissions(listOfSubmissions);
-                return;
-            }
+    private void retrieveSubmissions(User user) {
+        FirestoreHandler.getInstance(this).getSubmissions(user.get_id());
+    }
 
-            ViewUtils.visibleViews(submissionsBinding.noSubmissionLayout);
+    /*
+    Function to retrieve Assignment
+     */
+    private void retrieveAssignment() {
+        if (position < rawSubmissions.size()) {
+            String assignment_ref = rawSubmissions.get(position).get_assignment_ref();
+            FirestoreHandler.getInstance(this).getAssignment(assignment_ref);
             return;
         }
 
-        String[] ids = submissionsIds.get(position).split("___");
-        String subjectId = ids[0];
-        String assignmentId = ids[1];
-        String userId = viewModel.getUser().get_id();
-        FirestoreHandler.getInstance(this).getSubmission(subjectId, assignmentId, userId);
+        hideProgressBar();
+        position = 0;
+        viewModel.setAllSubmissions(listOfSubmissions);
+        submissionAdapter.submitList(listOfSubmissions);
     }
 
     /*
@@ -197,20 +183,37 @@ public class SubmissionsFragment extends Fragment implements FirestoreCallbacks,
      * @param notices - list of notices got from the database
      */
     @Override
-    public void onSuccess(User user, Teacher teacher, School school, List<School> schools, List<Subject> subjects, List<Assignment> assignments, Submission submissions, List<Notice> notices) {
+    public void onSuccess(User user, Teacher teacher, School school, List<School> schools, List<Subject> subjects, List<Assignment> assignments, List<Submission> submissions, List<Notice> notices) {
         if (submissionsBinding == null) return;
 
         if (user != null) {
             viewModel.setUser(user);
-            checksSubmissions();
+            retrieveSubmissions(user);
             return;
         }
 
         // If submissions is retrieved
         if (submissions != null) {
-            listOfSubmissions.add(submissions);
+            if (!submissions.isEmpty()) {
+                rawSubmissions.addAll(submissions);
+                retrieveAssignment();
+                return;
+            }
+            hideProgressBar();
+            ViewUtils.visibleViews(submissionsBinding.noSubmissionLayout);
+            return;
+        }
+
+        // if assignment is retrieved
+        if (assignments != null) {
+            if (!assignments.isEmpty()) {
+                Submission submission = rawSubmissions.get(position);
+                submission.set_assignment(assignments.get(0));
+                listOfSubmissions.add(submission);
+            }
+
             position += 1;
-            retrieveSubmissions();
+            retrieveAssignment();
             return;
         }
 

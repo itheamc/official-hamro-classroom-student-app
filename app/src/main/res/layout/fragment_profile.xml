@@ -8,10 +8,6 @@
             name="user"
             type="com.itheamc.hamroclassroom_student.models.User" />
 
-        <variable
-            name="school"
-            type="com.itheamc.hamroclassroom_student.models.School" />
-
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -71,7 +67,7 @@
                 android:layout_marginTop="24dp"
                 android:layout_marginEnd="16dp"
                 android:fontFamily="@font/denk_one"
-                android:text="@{school._name}"
+                android:text="@{user._school._name}"
                 android:textAlignment="center"
                 android:textSize="28sp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -191,7 +187,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-smallcaps"
-                    android:text="@{school._address}"
+                    android:text="@{user._school._address}"
                     android:textAlignment="center"
                     android:textColor="@color/primary_text_color_dark"
                     android:textSize="12sp"
@@ -203,7 +199,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
                     android:fontFamily="sans-serif-smallcaps"
-                    android:text="@{String.format(`Ph.: %s`, school._phone)}"
+                    android:text="@{String.format(`Ph.: %s`, user._school._phone)}"
                     android:textAlignment="center"
                     android:textColor="@color/primary_text_color_dark"
                     android:textSize="12sp"

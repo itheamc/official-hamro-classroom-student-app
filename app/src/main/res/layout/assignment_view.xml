@@ -11,6 +11,10 @@
             name="number"
             type="String" />
 
+        <variable
+            name="date"
+            type="String" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -61,11 +65,37 @@
                     android:layout_marginEnd="16dp"
                     android:fontFamily="sans-serif-condensed"
                     android:text="@{assignment._title}"
-                    android:textSize="20sp"
+                    android:textSize="24sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/assignmentNumber"
                     tools:text="What is vertebrate and invertebrate?" />
+
+                <TextView
+                    android:id="@+id/assignmentSubject"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-condensed"
+                    android:text="@{assignment._subject._name}"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="@id/assignmentTitle"
+                    app:layout_constraintStart_toStartOf="@id/assignmentTitle"
+                    app:layout_constraintTop_toBottomOf="@+id/assignmentTitle"
+                    tools:text="Nepali" />
+
+                <TextView
+                    android:id="@+id/assignedDate"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-condensed"
+                    android:text="@{date}"
+                    android:textSize="12sp"
+                    android:textStyle="italic"
+                    app:layout_constraintEnd_toEndOf="@+id/assignmentSubject"
+                    app:layout_constraintStart_toStartOf="@+id/assignmentSubject"
+                    app:layout_constraintTop_toBottomOf="@+id/assignmentSubject"
+                    tools:text="Nepali" />
 
                 <Button
                     android:id="@+id/submissionsButton"
@@ -83,7 +113,7 @@
                     app:cornerRadius="24dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/assignmentTitle"
+                    app:layout_constraintTop_toBottomOf="@+id/assignedDate"
                     app:strokeColor="@android:color/darker_gray" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.cardview.widget.CardView>

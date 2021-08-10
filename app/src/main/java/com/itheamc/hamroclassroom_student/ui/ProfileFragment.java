@@ -38,8 +38,6 @@ public class ProfileFragment extends Fragment implements FirestoreCallbacks {
     private FragmentProfileBinding profileBinding;
     private MainViewModel viewModel;
     private NavController navController;
-    private User user;
-    private School school;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -69,7 +67,7 @@ public class ProfileFragment extends Fragment implements FirestoreCallbacks {
         viewModel = new ViewModelProvider(requireActivity()).get(MainViewModel.class);
 
         // Calling function to pass data
-        passDataToBinding();
+        passDataToBinding(viewModel.getUser());
 
         // Handling Back Button
         profileBinding.backButton.setOnClickListener(v -> {
@@ -78,24 +76,17 @@ public class ProfileFragment extends Fragment implements FirestoreCallbacks {
     }
 
     // Function to pass data to the dataBinding
-    private void passDataToBinding() {
-        user = viewModel.getUser();
-        school = viewModel.getSchool();
+    private void passDataToBinding(User user) {
         if (user == null) {
             if (getActivity() != null) {
                 FirestoreHandler.getInstance(this).getUser(LocalStorage.getInstance(getActivity()).getUserId());
                 ViewUtils.showProgressBar(profileBinding.profileOverlayLayLayout);
             }
-        } else {
-            if (school != null) {
-                profileBinding.setUser(user);
-                profileBinding.setSchool(school);
-                ViewUtils.visibleViews(profileBinding.idCardView);
-                return;
-            }
-            FirestoreHandler.getInstance(this).getSchool(user.get_school_ref());
-            ViewUtils.showProgressBar(profileBinding.profileOverlayLayLayout);
+            return;
         }
+
+        profileBinding.setUser(user);
+        ViewUtils.visibleViews(profileBinding.idCardView);
     }
 
 
@@ -107,29 +98,13 @@ public class ProfileFragment extends Fragment implements FirestoreCallbacks {
      * -------------------------------------------------------------------
      */
     @Override
-    public void onSuccess(User user, Teacher teacher, School school, List<School> schools, List<Subject> subjects, List<Assignment> assignments, Submission submissions, List<Notice> notices) {
+    public void onSuccess(User user, Teacher teacher, School school, List<School> schools, List<Subject> subjects, List<Assignment> assignments, List<Submission> submissions, List<Notice> notices) {
         if (profileBinding == null) return;
         Log.d(TAG, "onSuccess: ");
         if (user != null) {
             viewModel.setUser(user);
-            passDataToBinding();
-            return;
+            passDataToBinding(user);
         }
-
-        if (school != null) {
-            if (school.get_id() == null) {
-                ViewUtils.hideProgressBar(profileBinding.profileOverlayLayLayout);
-                if (getContext() != null) NotifyUtils.showToast(getContext(), "School Not Found");
-                return;
-            }
-
-            viewModel.setSchool(school);
-            HandlerCompat.createAsync(Looper.getMainLooper()).post(() -> {
-                ViewUtils.hideProgressBar(profileBinding.profileOverlayLayLayout);
-                passDataToBinding();
-            });
-        }
-
     }
 
     @Override

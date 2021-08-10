@@ -190,9 +190,8 @@ public class LoginFragment extends Fragment implements LoginCallbacks, Firestore
      * These are the methods implemented from the FirestoreCallbacks
      * -------------------------------------------------------------------
      */
-
     @Override
-    public void onSuccess(User user, Teacher teacher, School school, List<School> schools, List<Subject> subjects, List<Assignment> assignments, Submission submissions, List<Notice> notices) {
+    public void onSuccess(User user, Teacher teacher, School school, List<School> schools, List<Subject> subjects, List<Assignment> assignments, List<Submission> submissions, List<Notice> notices) {
         if (loginBinding == null) return;
         if (user != null) {
             NotifyUtils.logDebug(TAG, user.toString());

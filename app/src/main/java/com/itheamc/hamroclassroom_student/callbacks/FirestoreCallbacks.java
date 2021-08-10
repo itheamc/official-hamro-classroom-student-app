@@ -18,7 +18,7 @@ public interface FirestoreCallbacks {
             List<School> schools,
             List<Subject> subjects,
             List<Assignment> assignments,
-            Submission submissions,
+            List<Submission> submissions,
             List<Notice> notices);
     void onFailure(Exception e);
 }

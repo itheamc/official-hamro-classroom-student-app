@@ -354,6 +354,7 @@ public class SubmitFragment extends Fragment implements StorageCallbacks, Firest
 
     @Override
     public void onSuccess(String imageUrl) {
+        if (submitBinding == null) return;
         if (imagesList == null) imagesList = new ArrayList<>();
         imagesList.add(imageUrl);
         uploadCount += 1;
@@ -417,7 +418,7 @@ public class SubmitFragment extends Fragment implements StorageCallbacks, Firest
      * ------------------------------------------------------------------------------------------
      */
     @Override
-    public void onSuccess(User user, Teacher teacher, School school, List<School> schools, List<Subject> subjects, List<Assignment> assignments, Submission submissions, List<Notice> notices) {
+    public void onSuccess(User user, Teacher teacher, School school, List<School> schools, List<Subject> subjects, List<Assignment> assignments, List<Submission> submissions, List<Notice> notices) {
         if (submitBinding == null) return;
 
         if (!is_submitted) {
@@ -432,7 +433,6 @@ public class SubmitFragment extends Fragment implements StorageCallbacks, Firest
         is_uploading = false;
         is_submitted = false;
         clearAllInputs();
-
     }
 
     /*
