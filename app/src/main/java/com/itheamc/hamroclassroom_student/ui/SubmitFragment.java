@@ -48,7 +48,6 @@ import com.itheamc.hamroclassroom_student.utils.ViewUtils;
 import com.itheamc.hamroclassroom_student.viewmodel.MainViewModel;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -179,7 +178,7 @@ public class SubmitFragment extends Fragment implements StorageCallbacks, Firest
          */
         submitBinding.imagePickerButton.setOnClickListener(v -> showImagePicker());
         submitBinding.submitButton.setOnClickListener(v -> {
-            _submissionId = IdGenerator.generateId();
+            _submissionId = IdGenerator.generateRandomId();
             if (!isInputsValid() && (imagesUri == null || imagesUri.size() < 1)) {
                 if (getContext() != null) NotifyUtils.showToast(getContext(), "Please write your views in the text box or pick images");
                 return;
@@ -417,8 +416,9 @@ public class SubmitFragment extends Fragment implements StorageCallbacks, Firest
      * - If something went wrong above OnFailure(Exception e) will be triggered
      * ------------------------------------------------------------------------------------------
      */
+
     @Override
-    public void onSuccess(User user, Teacher teacher, School school, List<School> schools, List<Subject> subjects, List<Assignment> assignments, List<Submission> submissions, List<Notice> notices) {
+    public void onSuccess(User user, List<School> schools, List<Teacher> teachers, List<Subject> subjects, List<Assignment> assignments, List<Submission> submissions, List<Notice> notices) {
         if (submitBinding == null) return;
 
         if (!is_submitted) {

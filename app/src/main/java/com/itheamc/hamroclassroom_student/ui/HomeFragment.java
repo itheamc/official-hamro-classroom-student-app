@@ -138,17 +138,16 @@ public class HomeFragment extends Fragment implements FirestoreCallbacks, View.O
     /**
      * -------------------------------------------------------------------------
      * These are the methods overrided from the FirestoreCallbacks
-     * @param user - it is the instance of the user
-     * @param teacher - it is the instance of the teacher
-     * @param school - it is the instance of the school
-     * @param schools - it is the instance of the List<School>
-     * @param subjects - it is the instance of the List<Subject>
-     * @param assignments - it is the instance of the List<Assignment>
-     * @param submissions - it is the instance of the List<Submission>
-     * @param notices - it is the instance of the List<Notice>
+     * @param user - an user object got from the database
+     * @param schools - list of schools got from the database
+     * @param teachers - list of teachers got from the database
+     * @param subjects - list of subjects got from the database
+     * @param assignments - list of assignments got from the database
+     * @param submissions - list of submissions got from the database
+     * @param notices - list of notices got from the database
      */
     @Override
-    public void onSuccess(User user, Teacher teacher, School school, List<School> schools, List<Subject> subjects, List<Assignment> assignments, List<Submission> submissions, List<Notice> notices) {
+    public void onSuccess(User user, List<School> schools, List<Teacher> teachers, List<Subject> subjects, List<Assignment> assignments, List<Submission> submissions, List<Notice> notices) {
         if (homeBinding == null) return;
         // If User retrieved from the Firestore
         if (user != null) {

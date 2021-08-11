@@ -162,17 +162,16 @@ public class NoticesFragment extends Fragment implements FirestoreCallbacks, Not
 
     /**
      * Methods implemented from the FirestoreCallbacks
-     * @param user -
-     * @param teacher -
-     * @param school -
-     * @param schools -
-     * @param subjects -
-     * @param assignments -
-     * @param submissions -
-     * @param notices -
+     * @param user - an user object got from the database
+     * @param schools - list of schools got from the database
+     * @param teachers - list of teachers got from the database
+     * @param subjects - list of subjects got from the database
+     * @param assignments - list of assignments got from the database
+     * @param submissions - list of submissions got from the database
+     * @param notices - list of notices got from the database
      */
     @Override
-    public void onSuccess(User user, Teacher teacher, School school, List<School> schools, List<Subject> subjects, List<Assignment> assignments, List<Submission> submissions, List<Notice> notices) {
+    public void onSuccess(User user, List<School> schools, List<Teacher> teachers, List<Subject> subjects, List<Assignment> assignments, List<Submission> submissions, List<Notice> notices) {
         if (noticesBinding == null) return;
         if (user != null) {
             viewModel.setUser(user);

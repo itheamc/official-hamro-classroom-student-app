@@ -174,16 +174,15 @@ public class SubmissionsFragment extends Fragment implements FirestoreCallbacks,
      * --------------------------------------------------------------------------
      * Function Implemented from the FirestoreCallbacks
      * @param user - an user object got from the database
-     * @param teacher - an teacher object got from the database
-     * @param school - an school object got from the database
      * @param schools - list of schools got from the database
+     * @param teachers - list of teachers got from the database
      * @param subjects - list of subjects got from the database
      * @param assignments - list of assignments got from the database
      * @param submissions - list of submissions got from the database
      * @param notices - list of notices got from the database
      */
     @Override
-    public void onSuccess(User user, Teacher teacher, School school, List<School> schools, List<Subject> subjects, List<Assignment> assignments, List<Submission> submissions, List<Notice> notices) {
+    public void onSuccess(User user, List<School> schools, List<Teacher> teachers, List<Subject> subjects, List<Assignment> assignments, List<Submission> submissions, List<Notice> notices) {
         if (submissionsBinding == null) return;
 
         if (user != null) {

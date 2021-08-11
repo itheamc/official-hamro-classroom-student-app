@@ -31,6 +31,7 @@ public class MainViewModel extends ViewModel {
      */
     private List<School> schools;
     private List<Subject> subjects;
+    private List<Teacher> teachers;
     private List<Assignment> assignments;
     private List<Assignment> allAssignments;
     private List<Submission> allSubmissions;
@@ -118,6 +119,14 @@ public class MainViewModel extends ViewModel {
         this.subjects = subjects;
     }
 
+    public List<Teacher> getTeachers() {
+        return teachers;
+    }
+
+    public void setTeachers(List<Teacher> teachers) {
+        this.teachers = teachers;
+    }
+
     public List<Assignment> getAssignments() {
         return assignments;
     }
@@ -167,9 +176,9 @@ public class MainViewModel extends ViewModel {
     }
 
     /*
-                Function to update subject in List<Subject> subjects
-                 */
-    public void modifySubjectItems(Subject _subject) {
+         Function to replace item in List<Subject> subjects
+          */
+    public void replaceSubject(Subject _subject) {
         List<Subject> subjectList = new ArrayList<>();
         for (Subject sub: subjects) {
             if (sub.get_id().equals(_subject.get_id())) {
@@ -181,5 +190,26 @@ public class MainViewModel extends ViewModel {
 
         this.subjects = new ArrayList<>();
         this.subjects = subjectList;
+    }
+
+    /*
+    Function to update subject Item in the subjects
+     */
+    public List<Subject> addTeacherToSubject(List<Teacher> __teachers) {
+        List<Subject> updatedSubjects = new ArrayList<>();
+        this.teachers = __teachers;
+        for (Subject sub: subjects) {
+            for (Teacher teach: __teachers) {
+                if (!sub.get_teacher_ref().equals(teach.get_id())) continue;
+                sub.set_teacher(teach);
+                break;
+            }
+
+            updatedSubjects.add(sub);
+        }
+
+        this.subjects = new ArrayList<>();
+        this.subjects = updatedSubjects;
+        return updatedSubjects;
     }
 }

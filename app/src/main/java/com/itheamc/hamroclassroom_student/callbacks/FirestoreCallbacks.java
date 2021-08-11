@@ -13,9 +13,8 @@ import java.util.List;
 public interface FirestoreCallbacks {
     void onSuccess(
             User user,
-            Teacher teacher,
-            School school,
             List<School> schools,
+            List<Teacher> teachers,
             List<Subject> subjects,
             List<Assignment> assignments,
             List<Submission> submissions,

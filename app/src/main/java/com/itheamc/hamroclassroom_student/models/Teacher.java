@@ -23,7 +23,6 @@ public class Teacher {
     public Teacher() {
     }
 
-
     // Constructor with parameters
     public Teacher(String _id, String _name, String _gender, String _image, String _phone, String _email, String _address, List<String> _schools_ref, List<School> _schools, List<String> _subjects_ref, List<Subject> _subjects, List<String> _assignments_ref, List<Assignment> _assignments, Date _joined_on) {
         this._id = _id;

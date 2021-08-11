@@ -270,7 +270,7 @@ public class RegisterFragment extends Fragment implements FirestoreCallbacks, Sc
      * -------------------------------------------------------------------
      */
     @Override
-    public void onSuccess(User user, Teacher teacher, School school, List<School> schools, List<Subject> subjects, List<Assignment> assignments, List<Submission> submissions, List<Notice> notices) {
+    public void onSuccess(User user, List<School> schools, List<Teacher> teachers, List<Subject> subjects, List<Assignment> assignments, List<Submission> submissions, List<Notice> notices) {
         if (registerBinding == null) return;
         if (schools != null) {
             this.schools = new ArrayList<>();

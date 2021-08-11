@@ -186,7 +186,7 @@ public class SubjectsFragment extends Fragment implements SubjectCallbacks, Fire
         // Updating to the view model
         user.set_subjects_ref(subjectIds);
         viewModel.setUser(user);
-        viewModel.modifySubjectItems(subject);
+        viewModel.replaceSubject(subject);
 
         if (subject.is_added()) {
             FirestoreHandler.getInstance(this).addSubjectToUser(user.get_id(), subject.get_id());
@@ -201,17 +201,17 @@ public class SubjectsFragment extends Fragment implements SubjectCallbacks, Fire
     /**
      * -------------------------------------------------------------------------
      * These are the methods overrided from the FirestoreCallbacks
-     * @param user - it is the instance of the user
-     * @param teacher - it is the instance of the teacher
-     * @param school - it is the instance of the school
-     * @param schools - it is the instance of the List<School>
-     * @param subjects - it is the instance of the List<Subject>
-     * @param assignments - it is the instance of the List<Assignment>
-     * @param submissions - it is the instance of the List<Submission>
-     * @param notices - it is the instance of the List<Notice>
+     * @param user - an user object got from the database
+     * @param schools - list of schools got from the database
+     * @param teachers - list of teachers got from the database
+     * @param subjects - list of subjects got from the database
+     * @param assignments - list of assignments got from the database
+     * @param submissions - list of submissions got from the database
+     * @param notices - list of notices got from the database
      */
+
     @Override
-    public void onSuccess(User user, Teacher teacher, School school, List<School> schools, List<Subject> subjects, List<Assignment> assignments, List<Submission> submissions, List<Notice> notices) {
+    public void onSuccess(User user, List<School> schools, List<Teacher> teachers, List<Subject> subjects, List<Assignment> assignments, List<Submission> submissions, List<Notice> notices) {
         if (subjectsBinding == null) return;
 
         // If User retrieved from the Firestore
@@ -233,7 +233,7 @@ public class SubjectsFragment extends Fragment implements SubjectCallbacks, Fire
 
         ViewUtils.hideProgressBar(subjectsBinding.subjectsOverlayLayLayout);
         ViewUtils.handleRefreshing(subjectsBinding.subjectsSwipeRefreshLayout);
-        NotifyUtils.showToast(getContext(), _message);
+        if (getContext() != null) NotifyUtils.showToast(getContext(), _message);
         passDataToRecyclerView();
     }
 

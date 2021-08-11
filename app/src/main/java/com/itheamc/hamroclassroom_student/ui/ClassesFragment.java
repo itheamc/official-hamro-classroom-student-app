@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -46,9 +45,11 @@ public class ClassesFragment extends Fragment implements SubjectCallbacks, Fires
     private NavController navController;
     private MainViewModel viewModel;
     private ClassesAdapter classesAdapter;
-    private List<Subject> rawSubjectsList;
-    private List<Subject> subjectList;
-    private int position;
+
+    /*
+    Boolean Variable
+     */
+    private boolean isFetching = false;
 
 
 
@@ -79,9 +80,6 @@ public class ClassesFragment extends Fragment implements SubjectCallbacks, Fires
         navController = Navigation.findNavController(view);
         viewModel = new ViewModelProvider(requireActivity()).get(MainViewModel.class);
 
-        // Initialize Arraylist
-        rawSubjectsList = new ArrayList<>();
-        subjectList = new ArrayList<>();
 
         classesAdapter = new ClassesAdapter(this);
         classesBinding.recyclerView.setAdapter(classesAdapter);
@@ -103,7 +101,9 @@ public class ClassesFragment extends Fragment implements SubjectCallbacks, Fires
         Setting OnRefreshListener on the swipe-refresh layout
          */
         classesBinding.classesSwipeRefreshLayout.setOnRefreshListener(() -> {
+            if (isFetching) return;
             viewModel.setSubjects(null);
+            viewModel.setTeachers(null);
             checksUser();
 
         });
@@ -116,6 +116,7 @@ public class ClassesFragment extends Fragment implements SubjectCallbacks, Fires
         User user = viewModel.getUser();
         if (user == null) {
             if (getActivity() != null) {
+                isFetching = true;
                 FirestoreHandler.getInstance(this).getUser(LocalStorage.getInstance(getActivity()).getUserId());
                 ViewUtils.showProgressBar(classesBinding.classesOverlayLayLayout);
             }
@@ -131,11 +132,19 @@ public class ClassesFragment extends Fragment implements SubjectCallbacks, Fires
         User user = viewModel.getUser();
         List<Subject> subjects = viewModel.getSubjects();
         if (subjects != null && !subjects.isEmpty()) {
-            ViewUtils.hideProgressBar(classesBinding.classesOverlayLayLayout);
-            classesAdapter.submitList(Subject.filterSubjects(subjects));
+            if (subjects.get(0).get_teacher() != null) {
+                ViewUtils.hideProgressBar(classesBinding.classesOverlayLayLayout);
+                classesAdapter.submitList(Subject.filterSubjects(subjects));
+                isFetching = false;
+                return;
+            }
+            isFetching = true;
+            fetchTeachers();
+            ViewUtils.showProgressBar(classesBinding.classesOverlayLayLayout);
             return;
         }
 
+        isFetching = true;
         FirestoreHandler.getInstance(this).getSubjects(user.get_school_ref(), user.get_class());
         ViewUtils.showProgressBar(classesBinding.classesOverlayLayLayout);
     }
@@ -213,8 +222,6 @@ public class ClassesFragment extends Fragment implements SubjectCallbacks, Fires
      * -------------------------------------------------------------------------
      * These are the methods overrided from the FirestoreCallbacks
      * @param user - it is the instance of the user
-     * @param teacher - it is the instance of the teacher
-     * @param school - it is the instance of the school
      * @param schools - it is the instance of the List<School>
      * @param subjects - it is the instance of the List<Subject>
      * @param assignments - it is the instance of the List<Assignment>
@@ -222,7 +229,7 @@ public class ClassesFragment extends Fragment implements SubjectCallbacks, Fires
      * @param notices - it is the instance of the List<Notice>
      */
     @Override
-    public void onSuccess(User user, Teacher teacher, School school, List<School> schools, List<Subject> subjects, List<Assignment> assignments, List<Submission> submissions, List<Notice> notices) {
+    public void onSuccess(User user, List<School> schools, List<Teacher> teachers, List<Subject> subjects, List<Assignment> assignments, List<Submission> submissions, List<Notice> notices) {
         if (classesBinding == null) return;
 
         // If User retrieved from the Firestore
@@ -234,22 +241,19 @@ public class ClassesFragment extends Fragment implements SubjectCallbacks, Fires
 
         // If Subjects retrieve from the firestore
         if (subjects != null) {
+            if (!subjects.isEmpty()) {
+                viewModel.setSubjects(subjects);
+                fetchTeachers();
+                return;
+            }
             ViewUtils.hideProgressBar(classesBinding.classesOverlayLayLayout);
             ViewUtils.handleRefreshing(classesBinding.classesSwipeRefreshLayout);
-            if (!subjects.isEmpty()) {
-                rawSubjectsList.addAll(subjects);
-                handleTeacher();
-            }
             return;
         }
 
         // If Assignment is retrieved
-        if (teacher != null) {
-            Subject subject = rawSubjectsList.get(position);
-            subject.set_teacher(teacher);
-            subjectList.add(subject);
-            position += 1;
-            handleTeacher();
+        if (teachers != null) {
+            handleTeachers(teachers);
             return;
         }
 
@@ -269,17 +273,23 @@ public class ClassesFragment extends Fragment implements SubjectCallbacks, Fires
     /**
      * Function to retrieve teacher and add to the subject
      */
-    private void handleTeacher() {
-        if (position < rawSubjectsList.size()) {
-            String teacher_ref = rawSubjectsList.get(position).get_teacher_ref();
-            FirestoreHandler.getInstance(this).getTeacher(teacher_ref);
+    private void fetchTeachers() {
+        List<Teacher> teachers = viewModel.getTeachers();
+        if (teachers != null) {
+            handleTeachers(teachers);
             return;
         }
 
-        position = 0;
-        ViewUtils.hideProgressBar(classesBinding.classesOverlayLayLayout);
-        ViewUtils.handleRefreshing(classesBinding.classesSwipeRefreshLayout);
-        handleSubjects(rawSubjectsList);
+        String _school_ref = viewModel.getUser().get_school_ref();
+        FirestoreHandler.getInstance(this).getTeachers(_school_ref);
+    }
+
+
+    /**
+     * Function to handle teachers
+     */
+    private void handleTeachers(List<Teacher> _teachers) {
+        handleSubjects(viewModel.addTeacherToSubject(_teachers));
     }
 
 
@@ -290,8 +300,13 @@ public class ClassesFragment extends Fragment implements SubjectCallbacks, Fires
     private void handleSubjects(List<Subject> subjects) {
         User u = viewModel.getUser();
         List<Subject> processedSubjects =  Subject.processedSubjects(subjects, u);
+
+        ViewUtils.hideProgressBar(classesBinding.classesOverlayLayLayout);
+        ViewUtils.handleRefreshing(classesBinding.classesSwipeRefreshLayout);
+
         viewModel.setSubjects(processedSubjects);
         classesAdapter.submitList(Subject.filterSubjects(processedSubjects));
+        isFetching = false;
     }
 
 
